@@ -1,0 +1,7 @@
+{
+  "name": "@soie/plugin",
+  "executors": "./executors.json",
+  "devDependencies": {
+    "tsup": "^8.0.1"
+  }
+}

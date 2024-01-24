@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "title": "tsup executor",
+  "description": "executor for building @soie typescript package",
+  "type": "object",
+  "properties": {
+    "main": {
+      "type": "string",
+      "description": "The path to the entry file, relative to project.",
+      "x-completion-type": "file",
+      "x-completion-glob": "**/*@(.js|.ts|.jsx|.tsx)",
+      "x-priority": "important"
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "The output path of the generated files.",
+      "x-completion-type": "directory",
+      "x-priority": "important"
+    },
+    "tsConfig": {
+      "type": "string",
+      "description": "The path to tsconfig file.",
+      "x-completion-type": "file",
+      "x-completion-glob": "tsconfig.*.json",
+      "x-priority": "important"
+    },
+    "projectRoot": {
+      "type": "string",
+      "description": "The path to project",
+      "x-completion-type": "file",
+      "x-priority": "important"
+    }
+  },
+  "required": ["tsConfig", "main", "outputPath", "projectRoot"]
+}

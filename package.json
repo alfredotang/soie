@@ -4,7 +4,9 @@
   "author": "Alfredo Tang",
   "description": "Alfredo's npm packages",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx"
+  },
   "private": false,
   "devDependencies": {
     "@nx/js": "17.2.8",
