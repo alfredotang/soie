@@ -22,6 +22,9 @@
     "promise",
     "request"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "types": "./index.d.ts",
   "main": "./index.cjs.js",
   "module": "./index.mjs",
