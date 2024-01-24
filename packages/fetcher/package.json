@@ -1,8 +1,26 @@
 {
   "name": "@soie/fetcher",
   "author": "Alfredo Tang",
+  "description": "Easily manage RESTful and GraphQL HTTP requests",
   "license": "MIT",
   "version": "0.1.0",
+  "homepage": "https://github.com/alfredotang/soie/tree/main/packages/fetcher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alfredotang/soie.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alfredotang/soie/issues"
+  },
+  "keywords": [
+    "fetch",
+    "graphql",
+    "http",
+    "https",
+    "ajax",
+    "promise",
+    "request"
+  ],
   "types": "./index.d.ts",
   "main": "./index.cjs.js",
   "module": "./index.mjs",
