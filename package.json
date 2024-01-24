@@ -1,12 +1,15 @@
 {
   "name": "@soie/source",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "author": "Alfredo Tang",
+  "description": "Alfredo's npm packages",
   "license": "MIT",
   "scripts": {},
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@nx/js": "17.2.8",
     "@nx/workspace": "17.2.8",
+    "@types/node": "^20.11.6",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "eslint": "^8.56.0",
@@ -16,6 +19,9 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "nx": "17.2.8",
     "prettier": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "workspaces": [
     "packages/*"
