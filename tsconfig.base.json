@@ -15,7 +15,10 @@
     "jsx": "preserve",
     "declaration": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@/fetcher/*": ["packages/fetcher/src/*"],
+      "@soie/fetcher": ["packages/fetcher/src/index.ts"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]

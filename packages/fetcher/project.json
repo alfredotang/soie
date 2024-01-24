@@ -1,0 +1,34 @@
+{
+  "name": "@soie/fetcher",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/fetcher/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@soie/plugin:tsup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "projectRoot": "packages/fetcher",
+        "outputPath": "dist/packages/fetcher",
+        "main": "src/index.ts",
+        "tsConfig": "tsconfig.lib.json"
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs @soie/fetcher {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/packages/fetcher"
+      }
+    }
+  },
+  "tags": []
+}
