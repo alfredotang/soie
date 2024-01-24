@@ -17,8 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@/fetcher/*": ["packages/fetcher/src/*"],
-      "@soie/plugin": ["packages/plugin/src/index.ts"],
-      "@soie/fetcher": ["packages/fetcher/src/index.ts"]
+      "@soie/fetcher": ["packages/fetcher/src/index.ts"],
+      "@soie/plugin": ["packages/plugin/src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
