@@ -2,5 +2,15 @@
   "name": "@soie/fetcher",
   "author": "Alfredo Tang",
   "license": "MIT",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "types": "./index.d.ts",
+  "main": "./index.cjs.js",
+  "module": "./index.mjs",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs",
+      "types": "./index.d.ts"
+    }
+  }
 }
