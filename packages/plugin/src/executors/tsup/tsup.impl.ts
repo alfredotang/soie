@@ -61,7 +61,7 @@ export default async function tsupExecutor(
 
         writeJsonFile(pkgPath, newPkg)
 
-        const actions = ['README.md', 'package.json']
+        const actions = ['README.md', 'package.json', '.npmrc']
           .map(file => ({
             file,
             path: joinPathFragments(root, projectRoot, file),
