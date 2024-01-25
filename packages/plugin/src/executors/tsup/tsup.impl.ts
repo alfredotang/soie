@@ -17,11 +17,11 @@ function writeExportInfo(path: string) {
   const moduleExportInfo = {
     types: './index.d.ts',
     main: './index.cjs.js',
-    module: './index.mjs',
+    module: './index.esm.js',
     exports: {
       '.': {
-        require: './index.js',
-        import: './index.esm.mjs',
+        require: './index.cjs.js',
+        import: './index.esm.js',
         types: './index.d.ts',
       },
     },
