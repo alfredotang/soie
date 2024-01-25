@@ -7,11 +7,13 @@
  * You might need to authenticate with NPM before running this script.
  */
 
-import devkit from '@nx/devkit'
+import {
+  joinPathFragments,
+  readCachedProjectGraph,
+  readJsonFile,
+  workspaceRoot,
+} from '@nx/devkit'
 import { execSync } from 'node:child_process'
-import { readFileSync, writeFileSync } from 'node:fs'
-
-const { readCachedProjectGraph } = devkit
 
 function invariant(condition, message) {
   if (!condition) {
@@ -20,24 +22,29 @@ function invariant(condition, message) {
   }
 }
 
+console.log(process.env.HELLO)
+
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, version, tag = 'next'] = process.argv
-console.log({ name, version, tag })
-
-// A simple SemVer validation to validate the version
-const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/
-invariant(
-  version && validVersion.test(version),
-  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
-)
-
+const [, , name] = process.argv
+const tag = 'next'
 const graph = readCachedProjectGraph()
 const project = graph.nodes[name]
 
 invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
+)
+
+const { version } = readJsonFile(
+  joinPathFragments(workspaceRoot, project.data.root, 'package.json')
+)
+
+// A simple SemVer validation to validate the version
+const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/
+invariant(
+  version && validVersion.test(version),
+  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 )
 
 const outputPath = project.data?.targets?.build?.options?.outputPath
@@ -47,15 +54,6 @@ invariant(
 )
 
 process.chdir(outputPath)
-
-// Updating the version in "package.json" before publishing
-try {
-  const json = JSON.parse(readFileSync(`package.json`).toString())
-  json.version = version
-  writeFileSync(`package.json`, JSON.stringify(json, null, 2))
-} catch (e) {
-  console.error(`Error reading package.json file from library build output.`)
-}
 
 // Execute "npm publish" to publish
 execSync(`npm publish --access public --tag ${tag}`)

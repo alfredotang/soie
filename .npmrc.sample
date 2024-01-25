@@ -1,4 +1,4 @@
+//registry.npmjs.org/:_authToken=your token
 strict-peer-dependencies=false
 auto-install-peers=true
 engine-strict=true
-hello=s

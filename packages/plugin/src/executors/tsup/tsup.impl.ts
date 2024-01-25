@@ -12,6 +12,27 @@ interface TsupExecutorOptions {
   main: string
 }
 
+function writeExportInfo(path: string) {
+  const pkg = readJsonFile(path)
+  const moduleExportInfo = {
+    types: './index.d.ts',
+    main: './index.cjs.js',
+    module: './index.mjs',
+    exports: {
+      '.': {
+        require: './index.js',
+        import: './index.esm.mjs',
+        types: './index.d.ts',
+      },
+    },
+  }
+
+  writeJsonFile(path, {
+    ...pkg,
+    ...moduleExportInfo,
+  })
+}
+
 export default async function tsupExecutor(
   {
     projectRoot,
@@ -44,24 +65,8 @@ export default async function tsupExecutor(
         }
       },
       async onSuccess() {
-        const pkg = readJsonFile(pkgPath)
-        const newPkg = {
-          ...pkg,
-          types: './index.d.ts',
-          main: './index.cjs.js',
-          module: './index.mjs',
-          exports: {
-            '.': {
-              require: './index.js',
-              import: './index.mjs',
-              types: './index.d.ts',
-            },
-          },
-        }
-
-        writeJsonFile(pkgPath, newPkg)
-
-        const actions = ['README.md', 'package.json', '.npmrc']
+        writeExportInfo(pkgPath)
+        const actions = ['README.md', 'package.json']
           .map(file => ({
             file,
             path: joinPathFragments(root, projectRoot, file),
