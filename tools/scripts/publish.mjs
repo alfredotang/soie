@@ -22,8 +22,6 @@ function invariant(condition, message) {
   }
 }
 
-console.log(process.env.HELLO)
-
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 const [, , name] = process.argv
