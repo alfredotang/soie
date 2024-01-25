@@ -16,12 +16,12 @@ function writeExportInfo(path: string) {
   const pkg = readJsonFile(path)
   const moduleExportInfo = {
     types: './index.d.ts',
-    main: './index.cjs.js',
-    module: './index.esm.js',
+    main: './index.js',
+    module: './index.mjs',
     exports: {
       '.': {
-        require: './index.cjs.js',
-        import: './index.esm.js',
+        require: './index.js',
+        import: './index.mjs',
         types: './index.d.ts',
       },
     },
@@ -59,11 +59,6 @@ export default async function tsupExecutor(
       dts: true,
       outDir,
       tsconfig,
-      outExtension(ctx) {
-        return {
-          js: `.${ctx.format}.js`,
-        }
-      },
       async onSuccess() {
         writeExportInfo(pkgPath)
         const actions = ['README.md', 'package.json']
