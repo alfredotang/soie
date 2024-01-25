@@ -24,8 +24,7 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name] = process.argv
-const tag = 'next'
+const [, , name, tag = 'latest'] = process.argv
 const graph = readCachedProjectGraph()
 const project = graph.nodes[name]
 
