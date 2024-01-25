@@ -3,11 +3,11 @@
   "author": "Alfredo Tang",
   "description": "Easily manage RESTful and GraphQL HTTP requests",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/alfredotang/soie/tree/main/packages/fetcher",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alfredotang/soie.git",
+    "url": "git+https://github.com/alfredotang/soie.git",
     "directory": "packages/fetcher"
   },
   "bugs": {
