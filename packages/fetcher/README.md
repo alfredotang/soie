@@ -2,6 +2,20 @@
 
 The **@soie/fetcher** library is a straightforward set of [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) utilities. It facilitates easy usage of both RESTful and GraphQL HTTP requests and is compatible with all modern browsers and Node.js 18+.
 
+## Table of content
+- [@soie/fetcher](#soiefetcher)
+  - [Table of content](#table-of-content)
+  - [Installation](#installation)
+  - [createFetcher](#createfetcher)
+    - [Configuration Options](#configuration-options)
+    - [`fetcher(url: string, init?: RequestInit)`](#fetcherurl-string-init-requestinit)
+    - [Using with TypeScript](#using-with-typescript)
+  - [createGraphQLFetcher](#creategraphqlfetcher)
+    - [Configuration Options](#configuration-options-1)
+    - [`graphQLFetcher(url: string, init?: RequestInit excluding 'method')`](#graphqlfetcherurl-string-init-requestinit-excluding-method)
+    - [Using with TypeScript](#using-with-typescript-1)
+
+
 ## Installation
 Using npm:
 ```bash
@@ -15,19 +29,6 @@ Using pnpm:
 ```bash
 pnpm add @soie/fetcher
 ```
-## Table of content
-- [@soie/fetcher](#soiefetcher)
-  - [Installation](#installation)
-  - [Table of content](#table-of-content)
-  - [createFetcher](#createfetcher)
-    - [Configuration Options](#configuration-options)
-    - [`fetcher(url: string, init?: RequestInit)`](#fetcherurl-string-init-requestinit)
-    - [Using with TypeScript](#using-with-typescript)
-  - [createGraphQLFetcher](#creategraphqlfetcher)
-    - [Configuration Options](#configuration-options-1)
-    - [`graphQLFetcher(url: string, init?: RequestInit excluding 'method')`](#graphqlfetcherurl-string-init-requestinit-excluding-method)
-    - [Using with TypeScript](#using-with-typescript-1)
-
 ## createFetcher
 ### Configuration Options
 - **timeout**

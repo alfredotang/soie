@@ -1,7 +1,7 @@
-type GeneraData = number | string | boolean
-type GeneraObj = Record<
+type Stringifiable = string | boolean | number | null | undefined
+type StringifiableRecord = Record<
   string,
-  GeneraData | Array<GeneraData | Record<string, GeneraData>>
+  Stringifiable | readonly Stringifiable[]
 >
 
 type FetcherResponse = {
@@ -21,14 +21,14 @@ export type FetcherResult<TResult> = FetcherResponse & {
 }
 
 export type FetcherError = FetcherResponse & {
-  message: string | Record<string, GeneraObj>
+  message: string | StringifiableRecord
 }
 
 export type GraphQLError = {
   message?: string
   locations?: Array<{ line: number; column: number }>
   path?: string[]
-  extensions?: Record<string, GeneraObj>
+  extensions?: StringifiableRecord
 }
 
 export type GraphQLFetcherError = FetcherError & {

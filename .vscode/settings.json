@@ -2,6 +2,13 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": ["devkit", "iife", "soie", "treeshake", "tsup"],
+  "cSpell.words": [
+    "devkit",
+    "iife",
+    "soie",
+    "Stringifiable",
+    "treeshake",
+    "tsup"
+  ],
   "eslint.validate": ["json"]
 }
