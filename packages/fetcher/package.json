@@ -3,7 +3,7 @@
   "author": "Alfredo Tang",
   "description": "Easily manage RESTful and GraphQL HTTP requests",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/alfredotang/soie/tree/main/packages/fetcher",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   "exports": {
     ".": {
       "require": "./index.js",
-      "import": "./index.mjs",
+      "import": "./index.esm.mjs",
       "types": "./index.d.ts"
     }
   }

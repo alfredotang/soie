@@ -15,7 +15,7 @@
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs @soie/fetcher 0.1.0 0.1.0",
+      "command": "node tools/scripts/publish.mjs @soie/fetcher",
       "dependsOn": ["build"]
     },
     "lint": {
