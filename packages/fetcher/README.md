@@ -94,7 +94,7 @@ const getPokemonList = async () => {
     - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
 
 ### Using with TypeScript
-```js
+```ts
 import { createFetcher } from '@soie/fetcher'
 
 type PokemonList = {
@@ -114,7 +114,6 @@ const getPokemonList = async (): Promise<PokemonList> => {
   return data
 }
 ```
----
 ## createGraphQLFetcher
 ### Configuration Options
 ```js
@@ -204,9 +203,7 @@ const getPokemonLocationAlola = async () => {
     - The status message corresponding to the status code
     - **type**: string
   - **header**
-    - The
-
- [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
     - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
     - Use `headers.get('your header key')` to get the header's value
   - **message**
@@ -219,7 +216,7 @@ const getPokemonLocationAlola = async () => {
       - **extensions**
 
 ### Using with TypeScript
-```js
+```ts
 import { createGraphQLFetcher } from '@soie/fetcher'
 
 type PokemonLocationAlola = {
