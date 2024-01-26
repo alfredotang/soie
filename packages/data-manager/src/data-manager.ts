@@ -7,8 +7,6 @@ import {
   Protocol,
 } from './types'
 
-export const gql = String.raw
-
 export const createDataManager = ({
   requestConfig,
   storagePrefix = 'data-manager',

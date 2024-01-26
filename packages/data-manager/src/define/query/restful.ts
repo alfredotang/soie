@@ -11,20 +11,20 @@ const Restful = async <TResult>(
   endpoint: Endpoint<'Query', 'GET', 'Restful'>,
   controller: Controller<'Restful'>
 ): Promise<FetcherResult<TResult>> => {
-  const url = encodeURI(
-    querystring.stringifyUrl(
-      {
-        url: snakeCaseKeysTransformer(
-          endpoint.path,
-          endpoint.transformer?.transformRequestToSnakeCase
-        ),
-        query: endpoint.params,
-      },
-      {
-        arrayFormat: endpoint.arrayFormat,
-      }
-    )
+  const url = querystring.stringifyUrl(
+    {
+      url: snakeCaseKeysTransformer(
+        endpoint.path,
+        endpoint.transformer?.transformRequestToSnakeCase
+      ),
+      query: endpoint.params,
+    },
+    {
+      arrayFormat: endpoint.arrayFormat,
+      encode: true,
+    }
   )
+
   try {
     const response = await controller(url, endpoint.requestInit)
 

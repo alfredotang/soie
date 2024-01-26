@@ -113,7 +113,7 @@ export type MutationStorageEndpoints<M extends StorageMutationMethod> =
     : M extends 'UPDATE'
       ? {
           path: string
-          params: ParamsRecord
+          params: Stringifiable | ParamsRecord
         }
       : M extends 'CLEAR'
         ? object

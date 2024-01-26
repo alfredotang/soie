@@ -6,7 +6,6 @@ import type {
 
 export type DataManagerConfig = {
   requestConfig?: FetcherRequestConfig
-
   storagePrefix?: string
   transformer?: KeyCaseTransformer
 }

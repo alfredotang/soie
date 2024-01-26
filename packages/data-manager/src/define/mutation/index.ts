@@ -3,9 +3,10 @@ import type {
   Endpoint,
   KeyCaseTransformer,
   Method,
-  Protocol,
   MutationFunc,
-} from '../../types'
+  Protocol,
+} from '@/data-manager/types'
+
 import GraphQL from './graphql'
 import Restful from './restful'
 import Storage from './storage'

@@ -1,9 +1,9 @@
 {
   "name": "@soie/data-manager",
   "author": "Alfredo Tang",
-  "description": "Easily manage RESTful GraphQL localStorage sessionStorage request",
+  "description": "A library that encapsulates Restful, GraphQL, localStorage, and sessionStorage, allowing you to easily handle asynchronous",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/alfredotang/soie/tree/main/packages/data-manager",
   "repository": {
     "type": "git",
@@ -28,9 +28,19 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@soie/fetcher": "workspace:^",
+    "@soie/fetcher": "^0.3.0",
     "camelcase-keys": "^9.1.3",
     "query-string": "^8.1.0",
     "snakecase-keys": "^6.0.0"
+  },
+  "types": "./index.d.ts",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs",
+      "types": "./index.d.ts"
+    }
   }
 }

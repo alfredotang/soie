@@ -2,7 +2,7 @@ import type { StorageProtocol } from '@/data-manager/types'
 
 const StorageKeyMap = {
   LocalStorage: 'ls',
-  SessionStorage: 'll',
+  SessionStorage: 'ss',
 }
 
 const buildStoragePath = ({

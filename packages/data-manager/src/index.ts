@@ -1,2 +1,2 @@
 export * from './data-manager'
-export * from './types'
+export * from './types/index.d'

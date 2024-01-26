@@ -1,10 +1,11 @@
 import type {
-  Endpoint,
-  Protocol,
   Controller,
+  Endpoint,
   KeyCaseTransformer,
+  Protocol,
   QueryFunc,
-} from '../../types'
+} from '@/data-manager/types'
+
 import GraphQL from './graphql'
 import Restful from './restful'
 import Storage from './storage'
