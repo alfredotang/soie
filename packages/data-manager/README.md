@@ -209,7 +209,7 @@ const getPokemonList = async (): Promise<PokemonList> => {
       path: 'theme',
     })
 
-    // storage will be generated to 
+    // storage key will be generated to 
     // LocalStorage: `${storagePrefix}-ls-theme`
     // SessionStorage: `${storagePrefix}-ss-theme`
     ```
@@ -531,7 +531,7 @@ const postPokemonName = async () => {
       }
     })
 
-    // Storage will be generated to 
+    // Storage key will be generated to 
     // LocalStorage: `${storagePrefix}-ls-theme`
     // SessionStorage: `${storagePrefix}-ss-theme`
     ```
