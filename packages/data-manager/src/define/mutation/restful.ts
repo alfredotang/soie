@@ -10,12 +10,10 @@ const Restful = async <TResult>(
   endpoint: Endpoint<'Mutation', Method, 'Restful'>,
   controller: Controller<'Restful'>
 ): Promise<FetcherResult<TResult>> => {
-  const body = encodeURI(
-    JSON.stringify(
-      snakeCaseKeysTransformer(
-        endpoint.params,
-        endpoint.transformer?.transformRequestToSnakeCase
-      )
+  const body = JSON.stringify(
+    snakeCaseKeysTransformer(
+      endpoint.params,
+      endpoint.transformer?.transformRequestToSnakeCase
     )
   )
 
