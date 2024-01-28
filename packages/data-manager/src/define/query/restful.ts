@@ -21,7 +21,6 @@ const Restful = async <TResult>(
     },
     {
       arrayFormat: endpoint.arrayFormat,
-      encode: false,
     }
   )
 
