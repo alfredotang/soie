@@ -1,8 +1,11 @@
 import type {
   createFetcher,
   createGraphQLFetcher,
+  FetcherError,
   FetcherRequestConfig,
 } from '@soie/fetcher'
+
+export { FetcherError }
 
 export type DataManagerConfig = {
   requestConfig?: FetcherRequestConfig
