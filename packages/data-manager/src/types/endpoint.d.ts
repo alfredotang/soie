@@ -7,7 +7,9 @@ import type {
 export type ExecuteType = 'Query' | 'Mutation'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type StringifiableRecord = Record<string, any>
+type Stringifiable = any
+
+type StringifiableRecord = Record<string, Stringifiable>
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
