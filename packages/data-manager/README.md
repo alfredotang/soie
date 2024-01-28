@@ -225,7 +225,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = async () => {
-  const { data } = await dataManager.query({ 
+  const data = await dataManager.query({ 
     protocol: 'LocalStorage',
     path: 'theme',
   })
@@ -248,7 +248,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = async (): Promise<Theme> => {
-  const { data } = await dataManager.query<Theme>({ 
+  const data = await dataManager.query<Theme>({ 
     protocol: 'LocalStorage',
     path: 'theme',
   })
