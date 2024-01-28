@@ -1,8 +1,5 @@
-type Stringifiable = string | boolean | number | null | undefined
-type StringifiableRecord = Record<
-  string,
-  Stringifiable | readonly Stringifiable[]
->
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type StringifiableRecord = Record<string, any>
 
 type FetcherResponse = {
   status: number

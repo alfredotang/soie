@@ -6,11 +6,8 @@ import type {
 
 export type ExecuteType = 'Query' | 'Mutation'
 
-type Stringifiable = string | boolean | number | null | undefined
-type StringifiableRecord = Record<
-  string,
-  Stringifiable | readonly Stringifiable[]
->
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type StringifiableRecord = Record<string, any>
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
