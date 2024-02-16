@@ -76,9 +76,6 @@ importers:
 
   packages/data-manager:
     dependencies:
-      '@soie/fetcher':
-        specifier: ^0.3.0
-        version: link:../fetcher
       camelcase-keys:
         specifier: ^9.1.3
         version: 9.1.3
