@@ -12,7 +12,8 @@
         "outputPath": "dist/packages/data-manager",
         "main": "src/index.ts",
         "tsConfig": "tsconfig.lib.json"
-      }
+      },
+      "dependsOn": ["test"]
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs @soie/data-manager",
