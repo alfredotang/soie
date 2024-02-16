@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type StringifiableRecord = Record<string, any>
+import type { StringifiableRecord } from '@soie/utils/types'
 
 type FetcherResponse = {
   status: number
