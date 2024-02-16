@@ -18,13 +18,13 @@ const GraphQL = async <TResult>(
       body: JSON.stringify(endpoint.params),
     })
 
-    return Promise.resolve({
+    return {
       ...response,
       data: camelCaseTransformer(
         response.data,
         endpoint.transformer?.transformResponseToCamelCase
       ) as TResult,
-    })
+    }
   } catch (_error) {
     const error = _error as GraphQLFetcherError
     throw {

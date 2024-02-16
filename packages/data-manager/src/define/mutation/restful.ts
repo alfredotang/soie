@@ -24,13 +24,13 @@ const Restful = async <TResult>(
       body,
     })
 
-    return Promise.resolve({
+    return {
       ...response,
       data: camelCaseTransformer(
         response.data,
         endpoint.transformer?.transformResponseToCamelCase
       ) as TResult,
-    })
+    }
   } catch (_error) {
     const error = _error as FetcherError
     throw {
