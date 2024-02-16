@@ -1,4 +1,6 @@
 import type { FetcherResult, GraphQLFetcherError } from '@soie/fetcher'
+import getTypeTag from '@soie/utils/get-type-tag'
+import validationFlow from '@soie/utils/validation-flow'
 
 import type {
   Controller,
@@ -7,6 +9,17 @@ import type {
   Protocol,
 } from '@/data-manager/types'
 import { camelCaseTransformer } from '@/data-manager/utils'
+
+const endpointValidation = (endpoint: GraphQLEndpoint) => {
+  validationFlow(
+    [endpoint.path, 'path is required'],
+    [endpoint.params?.query, 'params.query is required'],
+    [
+      getTypeTag(endpoint.params?.query) === 'String',
+      'params.query should be string',
+    ]
+  )
+}
 
 const GraphQL = async <TResult>(
   endpoint: GraphQLEndpoint,
@@ -45,8 +58,9 @@ const createGraphQL =
     controller: <P extends Protocol>(protocol: P) => Controller<P>
     transformer?: KeyCaseTransformer
   }) =>
-  <TResult>(endpoint: GraphQLEndpoint) =>
-    GraphQL<TResult>(
+  <TResult>(endpoint: GraphQLEndpoint) => {
+    endpointValidation(endpoint)
+    return GraphQL<TResult>(
       {
         ...endpoint,
         transformer: {
@@ -56,5 +70,6 @@ const createGraphQL =
       },
       controller('GraphQL')
     )
+  }
 
 export default createGraphQL

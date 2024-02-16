@@ -1,3 +1,5 @@
+import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
+
 import type {
   KeyCaseTransformer,
   ProtocolWithoutGQL,
@@ -6,19 +8,14 @@ import type {
 } from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Stringifiable = any
-
-type StringifiableRecord = Record<string, Stringifiable>
+export type { Stringifiable, StringifiableRecord }
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 export type Method = RestfulMethod | StorageMutationMethod
-export type ParamsRecord = StringifiableRecord
 export type GraphQLParams = {
   query: string
-  variables?: Record<string, Stringifiable>
+  variables?: StringifiableRecord
   operationName?: string
 }
 
@@ -68,7 +65,7 @@ export type MutationProtocolEndpoint<
 export type QueryEndpoints = {
   restful: {
     path: string
-    params?: ParamsRecord
+    params?: StringifiableRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
     arrayFormat?:
@@ -88,7 +85,7 @@ export type QueryEndpoints = {
 export type MutationRestEndpoint = {
   path: string
   method: RestfulMethod
-  params?: ParamsRecord
+  params?: StringifiableRecord
   requestInit?: Omit<RequestInit, 'method' | 'body'>
   transformer?: KeyCaseTransformer
 }
@@ -101,7 +98,7 @@ export type MutationStorageEndpoints<M extends StorageMutationMethod> =
     : M extends 'UPDATE'
       ? {
           path: string
-          params: Stringifiable | ParamsRecord
+          params: Stringifiable | StringifiableRecord
         }
       : M extends 'CLEAR'
         ? object

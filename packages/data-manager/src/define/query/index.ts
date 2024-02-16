@@ -1,3 +1,5 @@
+import validationFlow from '@soie/utils/validation-flow'
+
 import type {
   Controller,
   Endpoint,
@@ -21,6 +23,16 @@ const createQuery = ({
   const query: typeof QueryFunc = async <TResult, P extends ProtocolWithoutGQL>(
     endpoint: Endpoint<'Query', 'GET', P>
   ) => {
+    validationFlow(
+      [
+        ['LocalStorage', 'SessionStorage', 'Restful', undefined].includes(
+          endpoint.protocol
+        ),
+        `
+        The protocol parameter should be specified as either "LocalStorage", "SessionStorage", or "Restful". If you choose "Restful", there's no need to pass the protocol parameter.`,
+      ],
+      [endpoint.path, 'path is required']
+    )
     if (
       endpoint.protocol === 'LocalStorage' ||
       endpoint.protocol === 'SessionStorage'

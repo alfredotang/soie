@@ -1,7 +1,7 @@
 import type { FetcherResult } from '@soie/fetcher'
 
 import type { ProtocolWithoutGQL, StorageProtocol } from './data-manager'
-import type { Endpoint, Method } from './endpoint'
+import type { Endpoint, Method, StorageMutationMethod } from './endpoint'
 
 export declare function QueryFunc<TResult, P extends ProtocolWithoutGQL>(
   endpoint: Endpoint<'Query', 'GET', P>
@@ -25,6 +25,6 @@ export declare function MutationFunc<TResult>(
   endpoint: Endpoint<'Mutation', Method, 'Restful'>
 ): Promise<FetcherResult<TResult>>
 
-export declare function MutationFunc(
-  endpoint: Endpoint<'Mutation', Method, StorageProtocol>
+export declare function MutationFunc<M extends StorageMutationMethod>(
+  endpoint: Endpoint<'Mutation', M, StorageProtocol>
 ): Promise<void>
