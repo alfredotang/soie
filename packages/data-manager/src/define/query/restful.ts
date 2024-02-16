@@ -13,11 +13,11 @@ const Restful = async <TResult>(
 ): Promise<FetcherResult<TResult>> => {
   const url = querystring.stringifyUrl(
     {
-      url: snakeCaseKeysTransformer(
-        endpoint.path,
+      url: endpoint.path,
+      query: snakeCaseKeysTransformer(
+        endpoint.params,
         endpoint.transformer?.transformRequestToSnakeCase
       ),
-      query: endpoint.params,
     },
     {
       arrayFormat: endpoint.arrayFormat,
