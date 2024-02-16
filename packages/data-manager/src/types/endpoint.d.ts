@@ -1,6 +1,7 @@
 import type {
   KeyCaseTransformer,
-  Protocol,
+  ProtocolWithoutGQL,
+  RestProtocol,
   StorageProtocol,
 } from './data-manager'
 
@@ -17,19 +18,28 @@ export type Method = RestfulMethod | StorageMutationMethod
 export type ParamsRecord = StringifiableRecord
 export type GraphQLParams = {
   query: string
-  variables?: Record<string, unknown>
+  variables?: Record<string, Stringifiable>
   operationName?: string
+}
+
+export type GraphQLEndpoint = {
+  path: string
+  params: GraphQLParams
+  requestInit?: Omit<RequestInit, 'method' | 'body'>
+  transformer?: {
+    transformResponseToCamelCase?: boolean
+  }
 }
 
 export type Endpoint<
   E extends ExecuteType,
   M extends Method,
-  P extends Protocol = 'Restful',
+  P extends ProtocolWithoutGQL = RestProtocol,
 > = EndpointExecutor<E, P, M>
 
 export type EndpointExecutor<
   E extends ExecuteType,
-  P extends Protocol,
+  P extends ProtocolWithoutGQL,
   M extends Method,
 > = E extends 'Query'
   ? QueryProtocolEndpoint<P>
@@ -37,26 +47,23 @@ export type EndpointExecutor<
     ? MutationProtocolEndpoint<P, M>
     : never
 
-export type QueryProtocolEndpoint<P extends Protocol> = P extends 'Restful'
-  ? QueryEndpoints['restful'] & { protocol?: P }
-  : P extends StorageProtocol
-    ? QueryEndpoints['storage'] & { protocol: P }
-    : P extends 'GraphQL'
-      ? QueryEndpoints['graphql'] & { protocol: P }
+export type QueryProtocolEndpoint<P extends ProtocolWithoutGQL> =
+  P extends RestProtocol
+    ? QueryEndpoints['restful'] & { protocol?: P }
+    : P extends StorageProtocol
+      ? QueryEndpoints['storage'] & { protocol: P }
       : never
 
 export type MutationProtocolEndpoint<
-  P extends Protocol,
+  P extends ProtocolWithoutGQL,
   M extends Method,
-> = P extends 'Restful'
-  ? MutationEndpoints['restful'] & { protocol?: P; method: M }
-  : P extends 'GraphQL'
-    ? MutationEndpoints['graphql'] & { protocol: P }
-    : P extends StorageProtocol
-      ? M extends StorageMutationMethod
-        ? MutationStorageEndpoints<M> & { protocol: P; method: M }
-        : never
+> = P extends RestProtocol
+  ? MutationRestEndpoint & { protocol?: P; method: M }
+  : P extends StorageProtocol
+    ? M extends StorageMutationMethod
+      ? MutationStorageEndpoints<M> & { protocol: P; method: M }
       : never
+    : never
 
 export type QueryEndpoints = {
   restful: {
@@ -76,32 +83,14 @@ export type QueryEndpoints = {
   storage: {
     path: string
   }
-  graphql: {
-    path: string
-    params: GraphQLParams
-    requestInit?: Omit<RequestInit, 'method' | 'body'>
-    transformer?: {
-      transformResponseToCamelCase?: boolean
-    }
-  }
 }
 
-export type MutationEndpoints = {
-  restful: {
-    path: string
-    method: RestfulMethod
-    params?: ParamsRecord
-    requestInit?: Omit<RequestInit, 'method' | 'body'>
-    transformer?: KeyCaseTransformer
-  }
-  graphql: {
-    path: string
-    params: GraphQLParams
-    requestInit?: Omit<RequestInit, 'method' | 'body'>
-    transformer?: {
-      transformResponseToCamelCase?: boolean
-    }
-  }
+export type MutationRestEndpoint = {
+  path: string
+  method: RestfulMethod
+  params?: ParamsRecord
+  requestInit?: Omit<RequestInit, 'method' | 'body'>
+  transformer?: KeyCaseTransformer
 }
 
 export type MutationStorageEndpoints<M extends StorageMutationMethod> =

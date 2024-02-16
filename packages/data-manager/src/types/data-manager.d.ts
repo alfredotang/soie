@@ -19,8 +19,10 @@ export type KeyCaseTransformer = {
 }
 
 export type StorageProtocol = 'LocalStorage' | 'SessionStorage'
-export type HTTPProtocol = 'Restful' | 'GraphQL'
-export type Protocol = StorageProtocol | HTTPProtocol
+export type RestProtocol = 'Restful'
+export type GraphQLProtocol = 'GraphQL'
+export type Protocol = StorageProtocol | RestProtocol | GraphQLProtocol
+export type ProtocolWithoutGQL = StorageProtocol | RestProtocol
 
 export type Controller<T extends Protocol> = T extends 'Restful'
   ? ReturnType<typeof createFetcher>

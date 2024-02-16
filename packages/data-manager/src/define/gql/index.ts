@@ -1,19 +1,21 @@
 import type { FetcherResult, GraphQLFetcherError } from '@soie/fetcher'
 
-import type { Controller, Endpoint } from '@/data-manager/types'
-import { addGraphqlQueryType, camelCaseTransformer } from '@/data-manager/utils'
+import type {
+  Controller,
+  GraphQLEndpoint,
+  KeyCaseTransformer,
+  Protocol,
+} from '@/data-manager/types'
+import { camelCaseTransformer } from '@/data-manager/utils'
 
 const GraphQL = async <TResult>(
-  endpoint: Endpoint<'Mutation', 'POST', 'GraphQL'>,
+  endpoint: GraphQLEndpoint,
   controller: Controller<'GraphQL'>
 ): Promise<FetcherResult<TResult>> => {
   try {
     const response = await controller(endpoint.path, {
       ...endpoint.requestInit,
-      body: JSON.stringify({
-        ...endpoint.params,
-        query: addGraphqlQueryType(endpoint.params.query, 'mutation'),
-      }),
+      body: JSON.stringify(endpoint.params),
     })
 
     return Promise.resolve({
@@ -35,4 +37,24 @@ const GraphQL = async <TResult>(
   }
 }
 
-export default GraphQL
+const createGraphQL =
+  ({
+    controller,
+    transformer,
+  }: {
+    controller: <P extends Protocol>(protocol: P) => Controller<P>
+    transformer?: KeyCaseTransformer
+  }) =>
+  <TResult>(endpoint: GraphQLEndpoint) =>
+    GraphQL<TResult>(
+      {
+        ...endpoint,
+        transformer: {
+          ...transformer,
+          ...endpoint.transformer,
+        },
+      },
+      controller('GraphQL')
+    )
+
+export default createGraphQL

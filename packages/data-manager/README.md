@@ -15,19 +15,16 @@ The **@soie/data-manager** library is designed to encapsulate Restful, GraphQL, 
     - [LocalStorage or SessionStorage](#localstorage-or-sessionstorage)
       - [Usage](#usage-1)
       - [Using with TypeScript](#using-with-typescript-1)
-    - [GraphQL](#graphql)
-      - [Usage](#usage-2)
-        - [Using with TypeScript](#using-with-typescript-2)
   - [Mutation](#mutation)
     - [Restful](#restful-1)
+      - [usage](#usage-2)
+      - [using with typeScript](#using-with-typescript-2)
+    - [LocalStorage or SessionStorage](#localstorage-or-sessionstorage-1)
       - [usage](#usage-3)
       - [using with typeScript](#using-with-typescript-3)
-    - [LocalStorage or SessionStorage](#localstorage-or-sessionstorage-1)
-      - [usage](#usage-4)
-      - [using with typeScript](#using-with-typescript-4)
-    - [GraphQL](#graphql-1)
-      - [usage](#usage-5)
-      - [using with typeScript](#using-with-typescript-5)
+  - [GraphQL](#graphql)
+    - [Usage](#usage-4)
+    - [Using with TypeScript](#using-with-typescript-4)
 
 ## Installation
 Using npm:
@@ -256,154 +253,6 @@ const getTheme = async (): Promise<Theme> => {
 }
 ```
 
-### GraphQL
-**endpoint**
-  - **path**
-    - **type**: string
-  - **protocol**
-    - **type**: `'GraphQL'`
-  - **params**
-    ```js
-    const { data } = await dataManager.query({
-      protocol: 'GraphQL',
-      path: 'https://someapi/graphql',
-      params: { 
-        query: `
-          query locationAlola($region: String) {
-            region: pokemon_v2_region(where: {name: {_eq: $region}}) {
-              name
-            }
-          }
-        `,
-        variables: { 
-          region: 'alola'
-        },
-        operationName: 'locationAlola'
-      } 
-    })
-    ```
-    - **query**: graphql query schema
-    - **variables**: graphql query variables, optional
-    - **operationName**: graphql operation name, optional
-
-  - - **transformer**
-    - only transform key case in this request
-      - **transformResponseToCamelCase**: transform your response body's key into camel case
-    - `transformRequestToSnakeCase` is not provided because that will impact graphql query
-    - **default**: by global `transformer`
-  - **requestInit**
-    - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
-
-#### Usage
-```js
-import { createDataManager } from '@soie/data-manager'
-
-const dataManager = createDataManager ({
-  requestConfig: {
-    timeout: 3000,
-    baseURL: 'https://beta.pokeapi.co',
-    headers: {
-      Authorization: `Bearer ${your token}`,
-    }
-  }
-})
-
-const getPokemonLocation = async () => {
-  const { data } = await dataManager.query({
-    protocol: 'GraphQL',
-    path: '/graphql/v1beta',
-    params: { 
-      query: `
-        query locationAlola($region: String) {
-          region: pokemon_v2_region(where: {name: {_eq: $region}}) {
-            name
-          }
-        }
-      `,
-      variables: { 
-        region: 'alola'
-      },
-      operationName: 'locationAlola'
-    } 
-  })
-  return data
-}
-```
-- **response**
-  - No need to use `response.json()`, as the fetcher maps response data into:
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value
-  - **data**
-    - The API response body in JSON format
-- **errors**
-  - If there is a request error, it will always return an `error` object
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding
-  - **message**
-    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
-  - **errors**
-    - Returns [GraphQL errors](https://spec.graphql.org/October2021/#sec-Errors) or `[]`
-      - **message**   
-      - **locations**
-      - **path**
-      - **extensions**
-##### Using with TypeScript
-```ts
-import { createDataManager } from '@soie/data-manager'
-
-type PokemonLocation = {
-  //...
-}
-
-const dataManager = createDataManager (
-  requestConfig: {
-    {
-      timeout: 3000,
-      baseURL: 'https://beta.pokeapi.co',
-      headers: {
-        Authorization: `Bearer ${your token}`,
-      }
-    }
-  }
-)
-
-const getPokemonLocation = async (): Promise<PokemonLocation> => {
-  const { data } = await dataManager.query<PokemonLocation>({
-    protocol: 'GraphQL',
-    path: '/graphql/v1beta',
-    params: { 
-      query: `
-        query locationAlola($region: String) {
-          region: pokemon_v2_region(where: {name: {_eq: $region}}) {
-            name
-          }
-        }
-      `,
-      variables: { 
-        region: 'alola'
-      },
-      operationName: 'locationAlola'
-    } 
-  })
-  return data
-}
-```
-
-
-
-Certainly! Here's a revised version of your documentation:
-
 ## Mutation
 ### Restful
 **endpoint**
@@ -617,20 +466,17 @@ const clearAllLocalStorage = async () => {
 }
 ```
 
-### GraphQL
+## GraphQL
 **endpoint**
   - **path**
     - **type**: string
-  - **protocol**
-    - **type**: `'GraphQL'`
   - **params**
     ```js
-    await dataManager.mutation({
-      protocol: 'GraphQL',
+    const { data } = await dataManager.gal({
       path: 'https://someapi/graphql',
       params: { 
-        query:`
-          mutation locationAlola($region: String) {
+        query: `
+          query locationAlola($region: String) {
             region: pokemon_v2_region(where: {name: {_eq: $region}}) {
               name
             }
@@ -643,34 +489,56 @@ const clearAllLocalStorage = async () => {
       } 
     })
     ```
-    - **Query**: GraphQL query schema
-    - **variables**: GraphQL query variables, optional
-    - **operationName**: GraphQL operation name, optional
-  - **transformer**
-    - Only transform key case in this request
-      - **transformResponseToCamelCase**: Transforms your response body's key into camel case
-    - `transformRequestToSnakeCase` is not provided because that will impact GraphQL query
-    - **default**: By global `transformer`
+    - **query**: graphql query schema
+    - **variables**: graphql query variables, optional
+    - **operationName**: graphql operation name, optional
+
+  - - **transformer**
+    - only transform key case in this request
+      - **transformResponseToCamelCase**: transform your response body's key into camel case
+    - `transformRequestToSnakeCase` is not provided because that will impact graphql query
+    - **default**: by global `transformer`
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
 
-#### usage
+### Usage
 ```js
 import { createDataManager } from '@soie/data-manager'
 
-const dataManager = createDataManager({
+const dataManager = createDataManager ({
   requestConfig: {
     timeout: 3000,
-    baseURL: 'https://some-api',
+    baseURL: 'https://beta.pokeapi.co',
     headers: {
       Authorization: `Bearer ${your token}`,
     }
   }
 })
 
+// query
+const getPokemonLocation = async () => {
+  const { data } = await dataManager.gql({
+    path: '/graphql/v1beta',
+    params: { 
+      query: `
+        query locationAlola($region: String) {
+          region: pokemon_v2_region(where: {name: {_eq: $region}}) {
+            name
+          }
+        }
+      `,
+      variables: { 
+        region: 'alola'
+      },
+      operationName: 'locationAlola'
+    } 
+  })
+  return data
+}
+
+// mutation
 const postPokemonLocation = async () => {
-  await dataManager.mutation({
-    protocol: 'GraphQL',
+  await dataManager.gql({
     path: '/graphql',
     params: { 
       query: `
@@ -687,8 +555,8 @@ const postPokemonLocation = async () => {
     } 
   })
 }
-```
 
+```
 - **response**
   - No need to use `response.json()`, as the fetcher maps response data into:
   - **status**
@@ -703,19 +571,13 @@ const postPokemonLocation = async () => {
     - Use `headers.get('your header key')` to get the header's value
   - **data**
     - The API response body in JSON format
-
 - **errors**
   - If there is a request error, it will always return an `error` object
   - **status**
     - The status code of the response
     - **type**: number
   - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value
+    - The status message corresponding
   - **message**
     - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
   - **errors**
@@ -724,24 +586,50 @@ const postPokemonLocation = async () => {
       - **locations**
       - **path**
       - **extensions**
-
-#### using with typeScript
+### Using with TypeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'
 
-const dataManager = createDataManager({
+type PokemonLocation = {
+  //...
+}
+
+const dataManager = createDataManager (
   requestConfig: {
-    timeout: 3000,
-    baseURL: 'https://some-api',
-    headers: {
-      Authorization: `Bearer ${your token}`,
+    {
+      timeout: 3000,
+      baseURL: 'https://beta.pokeapi.co',
+      headers: {
+        Authorization: `Bearer ${your token}`,
+      }
     }
   }
-})
+)
 
+// query
+const getPokemonLocation = async (): Promise<PokemonLocation> => {
+  const { data } = await dataManager.gql<PokemonLocation>({
+    path: '/graphql/v1beta',
+    params: { 
+      query: `
+        query locationAlola($region: String) {
+          region: pokemon_v2_region(where: {name: {_eq: $region}}) {
+            name
+          }
+        }
+      `,
+      variables: { 
+        region: 'alola'
+      },
+      operationName: 'locationAlola'
+    } 
+  })
+  return data
+}
+
+// mutation
 const postPokemonLocation = async () => {
-  await dataManager.mutation<void>({
-    protocol: 'GraphQL',
+  await dataManager.gql<void>({
     path: '/graphql',
     params: { 
       query: `

@@ -4,10 +4,9 @@ import type {
   KeyCaseTransformer,
   Method,
   MutationFunc,
-  Protocol,
+  ProtocolWithoutGQL,
 } from '@/data-manager/types'
 
-import GraphQL from './graphql'
 import Restful from './restful'
 import Storage from './storage'
 
@@ -17,30 +16,17 @@ const createMutation = ({
   transformer,
 }: {
   storagePrefix: string
-  controller: <P extends Protocol>(protocol: P) => Controller<P>
+  controller: <P extends ProtocolWithoutGQL>(protocol: P) => Controller<P>
   transformer?: KeyCaseTransformer
 }) => {
   const mutation = async <TResult>(
-    endpoint: Endpoint<'Mutation', Method, Protocol>
+    endpoint: Endpoint<'Mutation', Method, ProtocolWithoutGQL>
   ) => {
     if (
       endpoint.protocol === 'LocalStorage' ||
       endpoint.protocol === 'SessionStorage'
     ) {
       return Storage(endpoint, controller(endpoint.protocol), storagePrefix)
-    }
-
-    if (endpoint.protocol === 'GraphQL') {
-      return GraphQL<TResult>(
-        {
-          ...endpoint,
-          transformer: {
-            ...transformer,
-            ...endpoint.transformer,
-          },
-        },
-        controller(endpoint.protocol)
-      )
     }
 
     return Restful<TResult>(

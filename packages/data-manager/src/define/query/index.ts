@@ -2,11 +2,10 @@ import type {
   Controller,
   Endpoint,
   KeyCaseTransformer,
-  Protocol,
+  ProtocolWithoutGQL,
   QueryFunc,
 } from '@/data-manager/types'
 
-import GraphQL from './graphql'
 import Restful from './restful'
 import Storage from './storage'
 
@@ -16,10 +15,10 @@ const createQuery = ({
   transformer,
 }: {
   storagePrefix: string
-  controller: <P extends Protocol>(protocol: P) => Controller<P>
+  controller: <P extends ProtocolWithoutGQL>(protocol: P) => Controller<P>
   transformer?: KeyCaseTransformer
 }) => {
-  const query: typeof QueryFunc = async <TResult, P extends Protocol>(
+  const query: typeof QueryFunc = async <TResult, P extends ProtocolWithoutGQL>(
     endpoint: Endpoint<'Query', 'GET', P>
   ) => {
     if (
@@ -30,19 +29,6 @@ const createQuery = ({
         endpoint,
         controller(endpoint.protocol) as Controller<'LocalStorage'>,
         storagePrefix
-      )
-    }
-
-    if (endpoint.protocol === 'GraphQL') {
-      return GraphQL<TResult>(
-        {
-          ...endpoint,
-          transformer: {
-            ...transformer,
-            ...endpoint.transformer,
-          },
-        },
-        controller(endpoint.protocol)
       )
     }
 

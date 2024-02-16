@@ -1,4 +1,4 @@
-import { createMutation, createQuery } from './define'
+import { createGraphQL, createMutation, createQuery } from './define'
 import createInstances from './instances'
 import {
   Controller,
@@ -35,5 +35,6 @@ export const createDataManager = ({
       transformer: defaultTransformer,
       storagePrefix,
     }),
+    gql: createGraphQL({ controller, transformer: defaultTransformer }),
   }
 }
