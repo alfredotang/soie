@@ -12,6 +12,7 @@ import {
   readCachedProjectGraph,
   readJsonFile,
   workspaceRoot,
+  writeJsonFile,
 } from '@nx/devkit'
 import { execSync } from 'node:child_process'
 
@@ -24,24 +25,33 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, tag = 'latest'] = process.argv
+const [, , name, version, tag = 'latest'] = process.argv
 const graph = readCachedProjectGraph()
 const project = graph.nodes[name]
+
+console.log(name, version)
 
 invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 )
 
-const { version } = readJsonFile(
-  joinPathFragments(workspaceRoot, project.data.root, 'package.json')
-)
-
-// A simple SemVer validation to validate the version
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/
 invariant(
   version && validVersion.test(version),
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
+)
+
+const pkg = readJsonFile(
+  joinPathFragments(workspaceRoot, project.data.root, 'package.json')
+)
+
+writeJsonFile(
+  joinPathFragments(workspaceRoot, project.data.root, 'package.json'),
+  {
+    ...pkg,
+    version,
+  }
 )
 
 const outputPath = project.data?.targets?.build?.options?.outputPath
@@ -49,6 +59,15 @@ invariant(
   outputPath,
   `Could not find "build.options.outputPath" of project "${name}". Is project.json configured  correctly?`
 )
+
+writeJsonFile(joinPathFragments(workspaceRoot, outputPath, 'package.json'), {
+  ...pkg,
+  version,
+})
+
+execSync(`git add ./${project.data.root}`)
+execSync(`git commit -m "release: ${name}@${version}"`)
+execSync('git push')
 
 process.chdir(outputPath)
 
