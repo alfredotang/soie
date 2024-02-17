@@ -39,6 +39,7 @@ export const createFetcher = ({
           statusTest: response.statusText,
           message: await response.clone().text(),
           ok: false,
+          headers: response.headers,
         }
       }
       const data = (await response.clone().json()) as TResult
