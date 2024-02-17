@@ -16,9 +16,12 @@ import {
 } from '@nx/devkit'
 import { execSync } from 'node:child_process'
 
+import consola from 'consola'
+import semver from 'semver'
+
 function invariant(condition, message) {
   if (!condition) {
-    console.error(message)
+    consola.error(message)
     process.exit(1)
   }
 }
@@ -29,22 +32,23 @@ const [, , name, version, tag = 'latest'] = process.argv
 const graph = readCachedProjectGraph()
 const project = graph.nodes[name]
 
-console.log(name, version)
-
 invariant(
   project,
   `Could not find project "${name}" in the workspace. Is the project.json configured correctly?`
 )
-
-const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/
 
 const pkg = readJsonFile(
   joinPathFragments(workspaceRoot, project.data.root, 'package.json')
 )
 
 invariant(
-  version && validVersion.test(version) && version !== pkg.version,
+  semver.valid(version),
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
+)
+
+invariant(
+  semver.gt(version, pkg.version),
+  `version should be greater than ${pkg.version}`
 )
 
 writeJsonFile(
