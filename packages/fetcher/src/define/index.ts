@@ -28,8 +28,6 @@ export const createFetcher = ({
       const response = await fetch(url, {
         ...init,
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
           ...defaultHeaders,
           ...(init?.headers || {}),
         },
