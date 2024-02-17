@@ -11,6 +11,7 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,5 +31,4 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v4
-
       - run: pnpm nx run-many -t test
