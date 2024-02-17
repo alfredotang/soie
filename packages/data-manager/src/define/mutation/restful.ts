@@ -10,12 +10,15 @@ const Restful = async <TResult>(
   endpoint: Endpoint<'Mutation', Method, 'Restful'>,
   controller: Controller<'Restful'>
 ): Promise<FetcherResult<TResult>> => {
-  const body = JSON.stringify(
-    snakeCaseKeysTransformer(
-      endpoint.params,
-      endpoint.transformer?.transformRequestToSnakeCase
-    )
-  )
+  const body =
+    endpoint.params instanceof FormData
+      ? (endpoint.params as unknown as FormData)
+      : JSON.stringify(
+          snakeCaseKeysTransformer(
+            endpoint.params,
+            endpoint.transformer?.transformRequestToSnakeCase
+          )
+        )
 
   try {
     const response = await controller(endpoint.path, {

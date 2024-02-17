@@ -1,4 +1,5 @@
 import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
+import type { StringifiableRecord as QueryStringStringifiableRecord } from 'query-string'
 
 import type {
   KeyCaseTransformer,
@@ -8,7 +9,11 @@ import type {
 } from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
-export type { Stringifiable, StringifiableRecord }
+export type {
+  QueryStringStringifiableRecord,
+  Stringifiable,
+  StringifiableRecord,
+}
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
@@ -65,7 +70,7 @@ export type MutationProtocolEndpoint<
 export type QueryEndpoints = {
   restful: {
     path: string
-    params?: StringifiableRecord
+    params?: QueryStringStringifiableRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
     arrayFormat?:
@@ -85,7 +90,7 @@ export type QueryEndpoints = {
 export type MutationRestEndpoint = {
   path: string
   method: RestfulMethod
-  params?: StringifiableRecord
+  params?: StringifiableRecord | FormData
   requestInit?: Omit<RequestInit, 'method' | 'body'>
   transformer?: KeyCaseTransformer
 }
