@@ -6,10 +6,11 @@
     }
   },
   "targetDefaults": {
+    "type:check": {
+      "cache": true
+    },
     "build": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "cache": true
     },
     "lint": {
       "cache": true
