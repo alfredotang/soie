@@ -37,13 +37,14 @@ invariant(
 )
 
 const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/
-invariant(
-  version && validVersion.test(version),
-  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
-)
 
 const pkg = readJsonFile(
   joinPathFragments(workspaceRoot, project.data.root, 'package.json')
+)
+
+invariant(
+  version && validVersion.test(version) && version !== pkg.version,
+  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 )
 
 writeJsonFile(
