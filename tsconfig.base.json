@@ -21,7 +21,7 @@
       "@soie/data-manager": ["packages/data-manager/src/index.ts"],
       "@soie/fetcher": ["packages/fetcher/src/index.ts"],
       "@soie/plugin": ["packages/plugin/src/index.ts"],
-      "@soie/utils/*": ["packages/utils/src/*"],
+      "@soie/utils/*": ["packages/utils/src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
