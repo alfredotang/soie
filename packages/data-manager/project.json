@@ -4,6 +4,9 @@
   "sourceRoot": "packages/data-manager/src",
   "projectType": "library",
   "targets": {
+    "type:check": {
+      "command": "tsc --noEmit -p ./packages/data-manager/tsconfig.lib.json"
+    },
     "build": {
       "executor": "@soie/plugin:tsup",
       "outputs": ["{options.outputPath}"],
@@ -13,7 +16,7 @@
         "main": "src/index.ts",
         "tsConfig": "tsconfig.lib.json"
       },
-      "dependsOn": ["test"]
+      "dependsOn": ["type:check", "test"]
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs @soie/data-manager",
