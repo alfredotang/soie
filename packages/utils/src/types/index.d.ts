@@ -1,8 +1,9 @@
 export type Stringifiable =
   | string
   | number
+  | bigint
   | boolean
-  | Array<string | number | boolean | object>
+  | Array<string | number | boolean | object | bigint>
   | object
   | null
 
