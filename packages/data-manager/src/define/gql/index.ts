@@ -40,13 +40,7 @@ const GraphQL = async <TResult>(
     }
   } catch (_error) {
     const error = _error as GraphQLFetcherError
-    throw {
-      ...camelCaseTransformer(
-        error,
-        endpoint.transformer?.transformResponseToCamelCase
-      ),
-      headers: error.headers,
-    } as GraphQLFetcherError
+    throw error
   }
 }
 

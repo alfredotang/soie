@@ -2,17 +2,18 @@
 import camelcaseKeys, { type CamelCaseKeys } from 'camelcase-keys'
 import snakecaseKeys, { type SnakeCaseKeys } from 'snakecase-keys'
 
-type ValidValue = readonly any[] | Record<string, any>
 type TransformerEnable = boolean | undefined
 
+type SnakeCaseTarget = Parameters<typeof snakecaseKeys>[0]
 type SnakeCaseTransformerResult<T, E extends TransformerEnable> = E extends true
-  ? T extends ValidValue
+  ? T extends SnakeCaseTarget
     ? SnakeCaseKeys<T, true, readonly unknown[], ''>
     : T
   : T
 
+type CamelCaseTarget = Parameters<typeof snakecaseKeys>[0]
 type CamelCaseTransformerResult<T, E extends TransformerEnable> = E extends true
-  ? T extends ValidValue
+  ? T extends CamelCaseTarget
     ? CamelCaseKeys<
         T,
         true,
@@ -34,11 +35,12 @@ export const snakeCaseKeysTransformer = <
 ): SnakeCaseTransformerResult<T, E> => {
   try {
     return enable
-      ? (snakecaseKeys(value as any, {
+      ? snakecaseKeys(value as any, {
           deep: true,
-        }) as any)
+        })
       : value
   } catch (err) {
+    console.error('transformer key to snake case error', err)
     return value as SnakeCaseTransformerResult<T, E>
   }
 }
@@ -52,11 +54,14 @@ export const camelCaseTransformer = <
 ): CamelCaseTransformerResult<T, E> => {
   try {
     return enable
-      ? (camelcaseKeys(value as any, {
+      ? camelcaseKeys(value as any, {
           deep: true,
-        }) as any)
+        })
       : value
-  } catch {
+  } catch (err) {
+    console.error('transformer key to camel case error', err)
     return value as CamelCaseTransformerResult<T, E>
   }
 }
+
+camelCaseTransformer(new Headers(), true)

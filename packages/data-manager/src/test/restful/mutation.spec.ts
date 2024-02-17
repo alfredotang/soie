@@ -2,6 +2,8 @@ import { createDataManager, type RestfulMethod } from '@soie/data-manager'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import asyncErrorWrapper from '@/data-manager/test/__test__/async-error-wrapper'
+
 const baseURL = 'https://api.afu.com/v1'
 const methods: RestfulMethod[] = ['POST', 'PATCH', 'PUT', 'DELETE']
 const httpMethods = ['post', 'put', 'patch', 'delete'] as const
@@ -35,6 +37,9 @@ const server = setupServer(
           JSON.stringify({ message: 'error', error_code: 123 }),
           {
             status: 400,
+            headers: {
+              status: 'no',
+            },
           }
         )
     )
@@ -138,39 +143,45 @@ describe('dataManager restful mutation', () => {
       describe(method, () => {
         describe('is response data correct', () => {
           describe('transformer response body to camel case', () => {
-            it('false', () => {
-              d.mutation<object>({
-                path: '/error',
-                method,
-              }).catch(error => {
-                expect(error).toEqual({
-                  status: 400,
-                  statusText: 'error',
-                  headers: new Headers(),
-                  message: {
-                    message: 'error',
-                    error_code: 123,
-                  },
-                })
+            it('false', async () => {
+              const error = await asyncErrorWrapper(
+                async () =>
+                  await d.mutation<object>({
+                    path: '/error',
+                    method,
+                  })
+              )
+              expect({
+                message: error?.message,
+                headerStatus: error?.headers.get('status'),
+              }).toEqual({
+                message: {
+                  message: 'error',
+                  error_code: 123,
+                },
+                headerStatus: 'no',
               })
             })
             it('true', async () => {
-              d.mutation<object>({
-                path: '/error',
-                method,
-                transformer: {
-                  transformResponseToCamelCase: true,
+              const error = await asyncErrorWrapper(
+                async () =>
+                  await d.mutation<object>({
+                    path: '/error',
+                    method,
+                    transformer: {
+                      transformResponseToCamelCase: true,
+                    },
+                  })
+              )
+              expect({
+                message: error?.message,
+                headerStatus: error?.headers.get('status'),
+              }).toEqual({
+                message: {
+                  message: 'error',
+                  errorCode: 123,
                 },
-              }).catch(error => {
-                expect(error).toEqual({
-                  status: 400,
-                  statusText: 'error',
-                  headers: new Headers(),
-                  message: {
-                    message: 'error',
-                    errorCode: 123,
-                  },
-                })
+                headerStatus: 'no',
               })
             })
           })

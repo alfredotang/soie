@@ -37,12 +37,13 @@ const Restful = async <TResult>(
   } catch (_error) {
     const error = _error as FetcherError
     throw {
-      ...camelCaseTransformer(
-        error,
-        endpoint.transformer?.transformResponseToCamelCase
+      ...error,
+      message: camelCaseTransformer(
+        error.message,
+        endpoint.transformer?.transformResponseToCamelCase &&
+          typeof error.message !== 'string'
       ),
-      headers: error.headers,
-    } as FetcherError
+    }
   }
 }
 

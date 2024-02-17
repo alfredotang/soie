@@ -2,6 +2,8 @@ import { createDataManager } from '@soie/data-manager'
 import { graphql, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import asyncErrorWrapper from '@/data-manager/test/__test__/async-error-wrapper'
+
 const baseURL = 'https://api.afu.com/v1'
 const gql = String.raw
 
@@ -156,22 +158,24 @@ describe('dataManager graphql', () => {
       })
     })
 
-    it('failed', () => {
-      d.gql<object>({
-        path: '/graphql',
-        params: {
-          query: gql`
-            mutation Error {
-              name
-            }
-          `,
-          variables: {
-            message: 'Ops! Error',
-          },
-        },
-      }).catch(error => {
-        expect(error.errors).toEqual([{ message: 'Ops! Error' }])
-      })
+    it('failed', async () => {
+      const error = await asyncErrorWrapper(
+        async () =>
+          await d.gql<object>({
+            path: '/graphql',
+            params: {
+              query: gql`
+                mutation Error {
+                  name
+                }
+              `,
+              variables: {
+                message: 'Ops! Error',
+              },
+            },
+          })
+      )
+      expect(error.errors).toEqual([{ message: 'Ops! Error' }])
     })
   })
 })

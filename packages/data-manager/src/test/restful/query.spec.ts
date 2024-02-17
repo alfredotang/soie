@@ -2,6 +2,8 @@ import { createDataManager } from '@soie/data-manager'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import asyncErrorWrapper from '@/data-manager/test/__test__/async-error-wrapper'
+
 const baseURL = 'https://api.afu.com/v1'
 
 const server = setupServer(
@@ -16,7 +18,7 @@ const server = setupServer(
   http.get(`${baseURL}/error`, () => {
     return new HttpResponse(
       JSON.stringify({ message: 'error', error_code: 123 }),
-      { status: 400 }
+      { status: 400, headers: { status: 'no' } }
     )
   })
 )
@@ -97,37 +99,46 @@ describe('dataManager restful query', () => {
   describe('failed', () => {
     describe('transformer response body to camel case', () => {
       it('false', async () => {
-        d.query<object>({
-          path: '/error',
-        }).catch(error => {
-          expect(error).toEqual({
-            status: 400,
-            statusText: 'error',
-            headers: new Headers(),
-            message: {
-              message: 'error',
-              error_code: 123,
-            },
-          })
+        const error = await asyncErrorWrapper(
+          async () =>
+            await d.query<object>({
+              path: '/error',
+              params: { helloWorld: 'hi' },
+            })
+        )
+
+        expect({
+          message: error?.message,
+          headerStatus: error?.headers.get('status'),
+        }).toEqual({
+          headerStatus: 'no',
+          message: {
+            message: 'error',
+            error_code: 123,
+          },
         })
       })
       it('true', async () => {
-        d.query<object>({
-          path: '/hello',
-          params: { helloWorld: 'hi' },
-          transformer: {
-            transformResponseToCamelCase: true,
+        const error = await asyncErrorWrapper(
+          async () =>
+            await d.query<object>({
+              path: '/error',
+              params: { helloWorld: 'hi' },
+              transformer: {
+                transformResponseToCamelCase: true,
+              },
+            })
+        )
+
+        expect({
+          message: error?.message,
+          headerStatus: error?.headers.get('status'),
+        }).toEqual({
+          headerStatus: 'no',
+          message: {
+            message: 'error',
+            errorCode: 123,
           },
-        }).catch(error => {
-          expect(error).toEqual({
-            status: 400,
-            statusText: 'error',
-            headers: new Headers(),
-            message: {
-              message: 'error',
-              errorCode: 123,
-            },
-          })
         })
       })
     })
