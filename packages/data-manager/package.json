@@ -3,7 +3,7 @@
   "author": "Alfredo Tang",
   "description": "A library that encapsulates Restful, GraphQL, localStorage, and sessionStorage, allowing you to easily handle asynchronous",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/alfredotang/soie/tree/main/packages/data-manager",
   "repository": {
     "type": "git",
