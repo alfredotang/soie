@@ -2,10 +2,6 @@
   "name": "@soie/plugin",
   "author": "Alfredo Tang",
   "executors": "./executors.json",
-  "scripts": {
-    "build": "echo \"skip\"",
-    "test": "echo \"skip\""
-  },
   "dependencies": {
     "tsup": "^8.0.1"
   }
