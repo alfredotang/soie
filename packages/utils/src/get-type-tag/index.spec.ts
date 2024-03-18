@@ -11,6 +11,9 @@ const testCase: Array<[unknown, TypeTag]> = [
   [undefined, 'Undefined'],
   [Symbol(), 'Symbol'],
   [Promise.resolve(), 'Promise'],
+  [new RegExp('hello'), 'RegExp'],
+  [new Date(), 'Date'],
+  [new Error('hello'), 'Error'],
 ]
 
 describe('getTypeTag', () => {

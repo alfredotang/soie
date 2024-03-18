@@ -11,6 +11,9 @@ export type TypeTag =
   | 'Function'
   | 'Promise'
   | 'NaN'
+  | 'RegExp'
+  | 'Error'
+  | 'Date'
 
 export default function getTypeTag(value: unknown): TypeTag {
   if (typeof value === 'number' && isNaN(value)) return 'NaN'
