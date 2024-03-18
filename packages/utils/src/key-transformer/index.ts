@@ -3,13 +3,11 @@ import { camelCase as camelcase, snakeCase as snakecase } from 'change-case'
 
 type ChangeCase = 'camelcase' | 'snakecase'
 type StringOrRegExp = string | RegExp
-type Options = {
-  changeCase: ChangeCase
+export type Options = {
+  changeCase?: ChangeCase
   excludes?: Array<StringOrRegExp>
   enabled?: boolean
 }
-
-const changerMap = { snakecase, camelcase }
 
 const isObject = (value: unknown) => getTypeTag(value) === 'Object'
 
@@ -53,13 +51,13 @@ const transform = <T>({
 }
 
 export default function keyTransFormer<T>(input: T, options: Options) {
-  const { changeCase, enabled = true, excludes = [] } = options
+  const { changeCase = '', enabled = true, excludes = [] } = options
 
-  if (!enabled) return input
+  if (!enabled || !changeCase) return input
 
   return transform({
     input,
     excludes,
-    changer: changerMap[changeCase],
+    changer: changeCase === 'camelcase' ? camelcase : snakecase,
   })
 }
