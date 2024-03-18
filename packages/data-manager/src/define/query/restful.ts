@@ -1,11 +1,8 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
+import keyTransformer from '@soie/utils/key-transformer'
 import querystring from 'query-string'
 
 import type { Controller, Endpoint } from '@/data-manager/types'
-import {
-  camelCaseTransformer,
-  snakeCaseKeysTransformer,
-} from '@/data-manager/utils'
 
 const Restful = async <TResult>(
   endpoint: Endpoint<'Query', 'GET', 'Restful'>,
@@ -14,10 +11,10 @@ const Restful = async <TResult>(
   const url = querystring.stringifyUrl(
     {
       url: endpoint.path,
-      query: snakeCaseKeysTransformer(
-        endpoint.params,
-        endpoint.transformer?.transformRequestToSnakeCase
-      ),
+      query: keyTransformer(endpoint.params, {
+        enabled: endpoint.transformer?.transformRequestToSnakeCase,
+        changeCase: 'snakecase',
+      }),
     },
     {
       arrayFormat: endpoint.arrayFormat,
@@ -27,23 +24,15 @@ const Restful = async <TResult>(
   try {
     const response = await controller(url, endpoint.requestInit)
 
-    return {
-      ...response,
-      data: camelCaseTransformer(
-        response.data,
-        endpoint.transformer?.transformResponseToCamelCase
-      ) as TResult,
-    }
-  } catch (_error) {
-    const error = _error as FetcherError
-    throw {
-      ...error,
-      message: camelCaseTransformer(
-        error.message,
-        endpoint.transformer?.transformResponseToCamelCase &&
-          typeof error.message !== 'string'
-      ),
-    }
+    return keyTransformer(response, {
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
+    }) as FetcherResult<TResult>
+  } catch (error) {
+    throw keyTransformer(error as FetcherError, {
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
+    })
   }
 }
 

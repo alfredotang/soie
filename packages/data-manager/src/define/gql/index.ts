@@ -1,5 +1,6 @@
 import type { FetcherResult, GraphQLFetcherError } from '@soie/fetcher'
 import getTypeTag from '@soie/utils/get-type-tag'
+import keyTransformer from '@soie/utils/key-transformer'
 import validationFlow from '@soie/utils/validation-flow'
 
 import type {
@@ -8,7 +9,6 @@ import type {
   KeyCaseTransformer,
   Protocol,
 } from '@/data-manager/types'
-import { camelCaseTransformer } from '@/data-manager/utils'
 
 const endpointValidation = (endpoint: GraphQLEndpoint) => {
   validationFlow(
@@ -31,13 +31,10 @@ const GraphQL = async <TResult>(
       body: JSON.stringify(endpoint.params),
     })
 
-    return {
-      ...response,
-      data: camelCaseTransformer(
-        response.data,
-        endpoint.transformer?.transformResponseToCamelCase
-      ) as TResult,
-    }
+    return keyTransformer(response, {
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
+    }) as FetcherResult<TResult>
   } catch (_error) {
     const error = _error as GraphQLFetcherError
     throw error

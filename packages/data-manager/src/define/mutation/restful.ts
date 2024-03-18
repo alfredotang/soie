@@ -1,10 +1,7 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
+import keyTransformer from '@soie/utils/key-transformer'
 
 import type { Controller, Endpoint, Method } from '@/data-manager/types'
-import {
-  camelCaseTransformer,
-  snakeCaseKeysTransformer,
-} from '@/data-manager/utils'
 
 const Restful = async <TResult>(
   endpoint: Endpoint<'Mutation', Method, 'Restful'>,
@@ -14,10 +11,10 @@ const Restful = async <TResult>(
     endpoint.params instanceof FormData
       ? (endpoint.params as unknown as FormData)
       : JSON.stringify(
-          snakeCaseKeysTransformer(
-            endpoint.params,
-            endpoint.transformer?.transformRequestToSnakeCase
-          )
+          keyTransformer(endpoint.params, {
+            changeCase: 'snakecase',
+            enabled: endpoint.transformer?.transformRequestToSnakeCase,
+          })
         )
 
   try {
@@ -27,23 +24,15 @@ const Restful = async <TResult>(
       body,
     })
 
-    return {
-      ...response,
-      data: camelCaseTransformer(
-        response.data,
-        endpoint.transformer?.transformResponseToCamelCase
-      ) as TResult,
-    }
-  } catch (_error) {
-    const error = _error as FetcherError
-    throw {
-      ...error,
-      message: camelCaseTransformer(
-        error.message,
-        endpoint.transformer?.transformResponseToCamelCase &&
-          typeof error.message !== 'string'
-      ),
-    }
+    return keyTransformer(response, {
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
+    }) as FetcherResult<TResult>
+  } catch (error) {
+    throw keyTransformer(error as FetcherError, {
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
+    })
   }
 }
 

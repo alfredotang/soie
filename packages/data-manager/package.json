@@ -28,9 +28,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "camelcase-keys": "^9.1.3",
-    "query-string": "^8.1.0",
-    "snakecase-keys": "^6.0.0"
+    "query-string": "^8.1.0"
   },
   "types": "./index.d.ts",
   "main": "./index.js",
