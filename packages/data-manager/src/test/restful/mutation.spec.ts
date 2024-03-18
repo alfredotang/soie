@@ -79,7 +79,10 @@ describe('dataManager restful mutation', () => {
                   method,
                   params: { helloWorld: 'hi' },
                   transformer: {
-                    transformRequestToSnakeCase: true,
+                    request: {
+                      enabled: true,
+                      changeCase: 'snakecase',
+                    },
                   },
                 })
 
@@ -106,7 +109,10 @@ describe('dataManager restful mutation', () => {
                   method,
                   params: { hello_world: 'hi' },
                   transformer: {
-                    transformResponseToCamelCase: true,
+                    response: {
+                      enabled: true,
+                      changeCase: 'camelcase',
+                    },
                   },
                 })
 
@@ -169,7 +175,10 @@ describe('dataManager restful mutation', () => {
                     path: '/error',
                     method,
                     transformer: {
-                      transformResponseToCamelCase: true,
+                      response: {
+                        enabled: true,
+                        changeCase: 'camelcase',
+                      },
                     },
                   })
               )

@@ -82,7 +82,10 @@ describe('dataManager graphql', () => {
                 },
               },
               transformer: {
-                transformResponseToCamelCase: true,
+                response: {
+                  enabled: true,
+                  changeCase: 'camelcase',
+                },
               },
             })
 
@@ -146,7 +149,10 @@ describe('dataManager graphql', () => {
                 },
               },
               transformer: {
-                transformResponseToCamelCase: true,
+                response: {
+                  enabled: true,
+                  changeCase: 'camelcase',
+                },
               },
             })
 

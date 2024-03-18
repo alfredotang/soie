@@ -51,7 +51,10 @@ describe('dataManager restful query', () => {
             path: '/hello',
             params: { helloWorld: 'hi' },
             transformer: {
-              transformRequestToSnakeCase: true,
+              request: {
+                enabled: true,
+                changeCase: 'snakecase',
+              },
             },
           })
           expect(data).toEqual({
@@ -68,7 +71,10 @@ describe('dataManager restful query', () => {
             path: '/hello',
             params: { helloWorld: 'hi' },
             transformer: {
-              transformRequestToSnakeCase: true,
+              request: {
+                enabled: true,
+                changeCase: 'snakecase',
+              },
             },
           })
 
@@ -82,8 +88,14 @@ describe('dataManager restful query', () => {
             path: '/hello',
             params: { helloWorld: 'hi' },
             transformer: {
-              transformRequestToSnakeCase: true,
-              transformResponseToCamelCase: true,
+              request: {
+                enabled: true,
+                changeCase: 'snakecase',
+              },
+              response: {
+                enabled: true,
+                changeCase: 'camelcase',
+              },
             },
           })
 
@@ -125,7 +137,10 @@ describe('dataManager restful query', () => {
               path: '/error',
               params: { helloWorld: 'hi' },
               transformer: {
-                transformResponseToCamelCase: true,
+                response: {
+                  enabled: true,
+                  changeCase: 'camelcase',
+                },
               },
             })
         )

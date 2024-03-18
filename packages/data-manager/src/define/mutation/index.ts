@@ -13,6 +13,7 @@ import type {
   StorageMutationMethod,
   StorageProtocol,
 } from '@/data-manager/types'
+import { mergeKeyTransformerConfig } from '@/data-manager/utils'
 
 import Restful from './restful'
 import Storage from './storage'
@@ -85,10 +86,10 @@ const createMutation = ({
     return Restful<TResult>(
       {
         ...endpoint,
-        transformer: {
-          ...transformer,
-          ...endpoint.transformer,
-        },
+        transformer: mergeKeyTransformerConfig(
+          transformer,
+          endpoint.transformer
+        ),
       },
       controller('Restful')
     )

@@ -7,6 +7,7 @@ import type {
   ProtocolWithoutGQL,
   QueryFunc,
 } from '@/data-manager/types'
+import { mergeKeyTransformerConfig } from '@/data-manager/utils'
 
 import Restful from './restful'
 import Storage from './storage'
@@ -47,10 +48,10 @@ const createQuery = ({
     return Restful<TResult>(
       {
         ...endpoint,
-        transformer: {
-          ...transformer,
-          ...endpoint.transformer,
-        },
+        transformer: mergeKeyTransformerConfig(
+          transformer,
+          endpoint.transformer
+        ),
       },
       controller('Restful')
     )

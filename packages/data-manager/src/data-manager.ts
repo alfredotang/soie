@@ -1,23 +1,12 @@
 import { createGraphQL, createMutation, createQuery } from './define'
 import createInstances from './instances'
-import {
-  Controller,
-  DataManagerConfig,
-  KeyCaseTransformer,
-  Protocol,
-} from './types'
+import { Controller, DataManagerConfig, Protocol } from './types'
 
 export const createDataManager = ({
   requestConfig,
   storagePrefix = 'data-manager',
-  transformer: _transformer,
+  transformer,
 }: DataManagerConfig = {}) => {
-  const defaultTransformer: KeyCaseTransformer = {
-    transformRequestToSnakeCase: false,
-    transformResponseToCamelCase: false,
-    ..._transformer,
-  }
-
   const instances = createInstances(requestConfig)
 
   const controller = <T extends Protocol>(protocol: T) => {
@@ -27,14 +16,14 @@ export const createDataManager = ({
   return {
     query: createQuery({
       controller,
-      transformer: defaultTransformer,
+      transformer,
       storagePrefix,
     }),
     mutation: createMutation({
       controller,
-      transformer: defaultTransformer,
+      transformer,
       storagePrefix,
     }),
-    gql: createGraphQL({ controller, transformer: defaultTransformer }),
+    gql: createGraphQL({ controller, transformer }),
   }
 }
