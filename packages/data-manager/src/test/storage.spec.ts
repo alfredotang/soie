@@ -60,11 +60,11 @@ describe('dataManager storage', () => {
       describe('query', () => {
         describe('is storage exist', () => {
           it('yes', () => {
-            const data = executor.query({ path: 'hello' })
+            const data = executor.query('hello')
             expect(data).toEqual({ name: protocol })
           })
           it('no', () => {
-            const data = executor.query({ path: 'world' })
+            const data = executor.query('world')
             expect(data).toBe(null)
           })
         })
@@ -77,7 +77,7 @@ describe('dataManager storage', () => {
             method,
             params: { name: protocol, value: 123 },
           })
-          const data = executor.query({ path: method })
+          const data = executor.query(method)
           expect(data).toEqual({ name: protocol, value: 123 })
         })
 
@@ -87,7 +87,7 @@ describe('dataManager storage', () => {
             path: method,
             method,
           })
-          const data = executor.query({ path: method })
+          const data = executor.query(method)
           expect(data).toBe(null)
         })
         it('CLEAR', async () => {
@@ -95,8 +95,8 @@ describe('dataManager storage', () => {
             method: 'CLEAR',
           })
 
-          const data1 = executor.query({ path: 'hello' })
-          const data2 = executor.query({ path: 'UPDATE' })
+          const data1 = executor.query('hello')
+          const data2 = executor.query('UPDATE')
 
           expect([data1, data2]).toEqual([null, null])
         })

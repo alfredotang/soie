@@ -6,7 +6,7 @@ import { buildStoragePath } from '@/data-manager/utils'
 const storageEndpointValidation = (
   endpoint: Endpoint<StorageProtocol, 'Query', never>
 ) => {
-  validationFlow([endpoint.path, 'path is required'])
+  validationFlow([endpoint, 'path is required'])
 }
 
 const createStorageQueryExecutor =
@@ -22,7 +22,7 @@ const createStorageQueryExecutor =
   <TResult>(endpoint: Endpoint<StorageProtocol, 'Query', never>) => {
     storageEndpointValidation(endpoint)
     const path = buildStoragePath({
-      path: endpoint.path,
+      path: endpoint,
       prefix: storagePrefix,
       protocol,
     })

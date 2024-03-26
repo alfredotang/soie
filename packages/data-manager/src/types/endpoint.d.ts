@@ -74,9 +74,7 @@ export type StorageEndpoint<
   E extends ExecuteType,
   M extends StorageMutationMethod,
 > = E extends 'Query'
-  ? {
-      path: string
-    }
+  ? string
   : E extends 'Mutation'
     ? StorageMutationEndpoints<M>
     : never

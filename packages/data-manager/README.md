@@ -207,8 +207,6 @@ const getPokemonList = async (): Promise<PokemonList> => {
 **endpoint**
   - **path**
     - **type**: string
-  - **protocol**
-    - **type**: Optional, can be `'Restful'`
   - **params**
     - Request body
     - **type**: Any JavaScript `object`
@@ -320,9 +318,7 @@ const postPokemonName = async () => {
     - storage key
     - **type**: string
     ```js
-    const { data } = dataManager.ls.query({
-      path: 'theme',
-    })
+    const { data } = dataManager.ls.query('theme')
 
     // storage key will be generated to 
     // `${storagePrefix}-ls-theme`
@@ -336,9 +332,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = () => {
-  const data = dataManager.ls.query({ 
-    path: 'theme',
-  })
+  const data = dataManager.ls.query('theme')
   return data
 }
 ```
@@ -358,10 +352,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = (): Theme => {
-  const data = dataManager.ls.query<Theme>({ 
-    protocol: 'LocalStorage',
-    path: 'theme',
-  })
+  const data = dataManager.ls.query<Theme>('theme')
   return data
 }
 ```
@@ -462,9 +453,7 @@ const clearAllLocalStorage = () => {
     - storage key
     - **type**: string
     ```js
-    const { data } = dataManager.ss.query({
-      path: 'theme',
-    })
+    const { data } = dataManager.ss.query('theme')
 
     // storage key will be generated to 
     // `${storagePrefix}-ss-theme`
@@ -478,9 +467,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = () => {
-  const data = dataManager.ss.query({ 
-    path: 'theme',
-  })
+  const data = dataManager.ss.query('theme')
   return data
 }
 ```
@@ -500,10 +487,7 @@ const dataManager = createDataManager ({
 })
 
 const getTheme = (): Theme => {
-  const data = dataManager.ss.query<Theme>({ 
-    protocol: 'LocalStorage',
-    path: 'theme',
-  })
+  const data = dataManager.ss.query<Theme>('theme')
   return data
 }
 ```
