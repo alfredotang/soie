@@ -8,23 +8,31 @@ The **@soie/data-manager** library is designed to encapsulate Restful, GraphQL, 
   - [Installation](#installation)
   - [Configuration Options](#configuration-options)
     - [createDataManager](#createdatamanager)
-  - [Query](#query)
-    - [Restful](#restful)
+  - [Restful](#restful)
+    - [Query](#query)
       - [Usage](#usage)
       - [Using with TypeScript](#using-with-typescript)
-    - [LocalStorage or SessionStorage](#localstorage-or-sessionstorage)
-      - [Usage](#usage-1)
-      - [Using with TypeScript](#using-with-typescript-1)
-  - [Mutation](#mutation)
-    - [Restful](#restful-1)
-      - [usage](#usage-2)
-      - [using with typeScript](#using-with-typescript-2)
-    - [LocalStorage or SessionStorage](#localstorage-or-sessionstorage-1)
-      - [usage](#usage-3)
-      - [using with typeScript](#using-with-typescript-3)
+    - [Mutation](#mutation)
+      - [usage](#usage-1)
+      - [using with typeScript](#using-with-typescript-1)
+  - [Storage](#storage)
+    - [LocalStorage](#localstorage)
+      - [Query](#query-1)
+        - [Usage](#usage-2)
+        - [Using with TypeScript](#using-with-typescript-2)
+      - [Mutation](#mutation-1)
+        - [usage](#usage-3)
+        - [using with typeScript](#using-with-typescript-3)
+    - [SessionStorage](#sessionstorage)
+      - [Query](#query-2)
+        - [Usage](#usage-4)
+        - [Using with TypeScript](#using-with-typescript-4)
+      - [Mutation](#mutation-2)
+        - [usage](#usage-5)
+        - [using with typeScript](#using-with-typescript-5)
   - [GraphQL](#graphql)
-    - [Usage](#usage-4)
-    - [Using with TypeScript](#using-with-typescript-4)
+    - [Usage](#usage-6)
+    - [Using with TypeScript](#using-with-typescript-6)
 
 ## Installation
 Using npm:
@@ -39,6 +47,8 @@ Using pnpm:
 ```bash
 pnpm add @soie/data-manager
 ```
+
+---
 
 ## Configuration Options
 ### createDataManager
@@ -69,13 +79,12 @@ pnpm add @soie/data-manager
     - `transformRequestToSnakeCase`: `false`
     - `transformResponseToCamelCase`: `false`
 
-## Query
-### Restful
+---
+## Restful
+### Query
 **endpoint**
   - **path**
     - **type**: string
-  - **protocol**
-    - **type**: `'Restful'` is optional
   - **params**
     - **type**: any javascript `object`
     - **default**: `undefined`
@@ -121,7 +130,6 @@ const dataManager = createDataManager ({
 
 const getPokemonList = async () => {
   const { data } = await dataManager.query({ 
-    protocol: 'Restful', // in Restful request protocol is optional
     path: '/pokemon',
     params: {
       limit: 10,
@@ -195,66 +203,7 @@ const getPokemonList = async (): Promise<PokemonList> => {
   return data
 }
 ```
-### LocalStorage or SessionStorage
-**endpoint**
-  - **path**
-    - storage key
-    - **type**: string
-    ```js
-    const { data } = await dataManager.query({
-      protocol: 'LocalStorage', // or 'SessionStorage'
-      path: 'theme',
-    })
-
-    // storage key will be generated to 
-    // LocalStorage: `${storagePrefix}-ls-theme`
-    // SessionStorage: `${storagePrefix}-ss-theme`
-    ```
-  - **protocol**
-    - **type**: `'LocalStorage' | 'SessionStorage'` 
-
-#### Usage
-```js
-import { createDataManager } from '@soie/data-manager'
-
-const dataManager = createDataManager ({
-  storagePrefix: 'hello'
-})
-
-const getTheme = async () => {
-  const data = await dataManager.query({ 
-    protocol: 'LocalStorage',
-    path: 'theme',
-  })
-  return data
-}
-```
-- **response**
-  - **data**
-    - `string` or `JSON` for storage
-#### Using with TypeScript
-```ts
-import { createDataManager } from '@soie/data-manager'
-
-type Theme = {
-  // ...
-}
-
-const dataManager = createDataManager ({
-  storagePrefix: 'hello'
-})
-
-const getTheme = async (): Promise<Theme> => {
-  const data = await dataManager.query<Theme>({ 
-    protocol: 'LocalStorage',
-    path: 'theme',
-  })
-  return data
-}
-```
-
-## Mutation
-### Restful
+### Mutation
 **endpoint**
   - **path**
     - **type**: string
@@ -295,7 +244,6 @@ const dataManager = createDataManager({
 
 const postPokemonName = async () => {
   await dataManager.mutation({ 
-    protocol: 'Restful', // In Restful requests, the protocol is optional
     path: '/pokemon',
     method: 'POST',
     params: {
@@ -355,7 +303,6 @@ const dataManager = createDataManager({
 
 const postPokemonName = async () => {
   await dataManager.mutation<void>({ 
-    protocol: 'Restful', // In Restful requests, the protocol is optional
     path: '/pokemon',
     method: 'POST',
     params: {
@@ -364,15 +311,67 @@ const postPokemonName = async () => {
   })
 }
 ```
+---
+## Storage
+### LocalStorage
+#### Query
+**endpoint**
+  - **path**
+    - storage key
+    - **type**: string
+    ```js
+    const { data } = dataManager.ls.query({
+      path: 'theme',
+    })
 
-### LocalStorage or SessionStorage
+    // storage key will be generated to 
+    // `${storagePrefix}-ls-theme`
+    ```
+##### Usage
+```js
+import { createDataManager } from '@soie/data-manager'
+
+const dataManager = createDataManager ({
+  storagePrefix: 'hello'
+})
+
+const getTheme = () => {
+  const data = dataManager.ls.query({ 
+    path: 'theme',
+  })
+  return data
+}
+```
+- **response**
+  - **data**
+    - `string` or `JSON` for storage
+##### Using with TypeScript
+```ts
+import { createDataManager } from '@soie/data-manager'
+
+type Theme = {
+  // ...
+}
+
+const dataManager = createDataManager ({
+  storagePrefix: 'hello'
+})
+
+const getTheme = (): Theme => {
+  const data = dataManager.ls.query<Theme>({ 
+    protocol: 'LocalStorage',
+    path: 'theme',
+  })
+  return data
+}
+```
+#### Mutation
 **endpoint**
   - **path**
     - Storage key
     - **type**: string
     ```js
-    await dataManager.mutation({
-      protocol: 'LocalStorage', // or 'SessionStorage'
+    dataManager.ls.mutation({
       method: 'UPDATE',
       path: 'theme',
       params: {
@@ -381,11 +380,8 @@ const postPokemonName = async () => {
     })
 
     // Storage key will be generated to 
-    // LocalStorage: `${storagePrefix}-ls-theme`
-    // SessionStorage: `${storagePrefix}-ss-theme`
+    // `${storagePrefix}-ls-theme`
     ```
-  - **protocol**
-    - **type**: `'LocalStorage' | 'SessionStorage'` 
   - **method**
     - **type**: `'UPDATE' | 'CLEAR' | 'DELETE'`
     - `UPDATE`: storage.setItem
@@ -394,7 +390,7 @@ const postPokemonName = async () => {
   - **params**
     - When using `UPDATE`, you need to pass value
 
-#### usage
+##### usage
 ```js
 import { createDataManager } from '@soie/data-manager'
 
@@ -402,9 +398,8 @@ const dataManager = createDataManager({
   storagePrefix: 'hello'
 })
 
-const setTheme = async () => {
-  await dataManager.mutation({ 
-    protocol: 'LocalStorage',
+const setTheme = () => {
+  dataManager.ls.mutation({ 
     method: 'UPDATE',
     path: 'theme',
     params: {
@@ -413,17 +408,15 @@ const setTheme = async () => {
   })
 }
 
-const deleteTheme = async () => {
-  await dataManager.mutation({ 
-    protocol: 'LocalStorage',
+const deleteTheme = () => {
+  dataManager.ls.mutation({ 
     method: 'DELETE',
     path: 'theme',
   })
 }
 
-const clearAllLocalStorage = async () => {
-  await dataManager.mutation({ 
-    protocol: 'LocalStorage',
+const clearAllLocalStorage = () => {
+  dataManager.ls.mutation({ 
     method: 'CLEAR',
   })
 }
@@ -431,7 +424,7 @@ const clearAllLocalStorage = async () => {
 
 - **Response**: `void`
 
-#### using with typeScript
+##### using with typeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'
 
@@ -439,9 +432,8 @@ const dataManager = createDataManager({
   storagePrefix: 'hello'
 })
 
-const setTheme = async () => {
-  await dataManager.mutation<void>({ 
-    protocol: 'LocalStorage',
+const setTheme = () => {
+  dataManager.ls.mutation<void>({ 
     method: 'UPDATE',
     path: 'theme',
     params: {
@@ -450,22 +442,162 @@ const setTheme = async () => {
   })
 }
 
-const deleteTheme = async () => {
-  await dataManager.mutation<void>({ 
-    protocol: 'LocalStorage',
+const deleteTheme = () => {
+  dataManager.ls.mutation<void>({ 
     method: 'DELETE',
     path: 'theme',
   })
 }
 
-const clearAllLocalStorage = async () => {
-  await dataManager.mutation<void>({ 
+const clearAllLocalStorage = () => {
+  dataManager.ls.mutation<void>({ 
+    method: 'CLEAR',
+  })
+}
+```
+### SessionStorage
+#### Query
+**endpoint**
+  - **path**
+    - storage key
+    - **type**: string
+    ```js
+    const { data } = dataManager.ss.query({
+      path: 'theme',
+    })
+
+    // storage key will be generated to 
+    // `${storagePrefix}-ss-theme`
+    ```
+##### Usage
+```js
+import { createDataManager } from '@soie/data-manager'
+
+const dataManager = createDataManager ({
+  storagePrefix: 'hello'
+})
+
+const getTheme = () => {
+  const data = dataManager.ss.query({ 
+    path: 'theme',
+  })
+  return data
+}
+```
+- **response**
+  - **data**
+    - `string` or `JSON` for storage
+##### Using with TypeScript
+```ts
+import { createDataManager } from '@soie/data-manager'
+
+type Theme = {
+  // ...
+}
+
+const dataManager = createDataManager ({
+  storagePrefix: 'hello'
+})
+
+const getTheme = (): Theme => {
+  const data = dataManager.ss.query<Theme>({ 
     protocol: 'LocalStorage',
+    path: 'theme',
+  })
+  return data
+}
+```
+#### Mutation
+**endpoint**
+  - **path**
+    - Storage key
+    - **type**: string
+    ```js
+    dataManager.ss.mutation({
+      method: 'UPDATE',
+      path: 'theme',
+      params: {
+        primary: '#FF5534'
+      }
+    })
+
+    // Storage key will be generated to 
+    // `${storagePrefix}-ss-theme`
+    ```
+  - **method**
+    - **type**: `'UPDATE' | 'CLEAR' | 'DELETE'`
+    - `UPDATE`: storage.setItem
+    - `DELETE`: storage.deleteItem
+    - `CLEAR`: clear all storage by prefix is `${storagePrefix}`
+  - **params**
+    - When using `UPDATE`, you need to pass value
+
+##### usage
+```js
+import { createDataManager } from '@soie/data-manager'
+
+const dataManager = createDataManager({
+  storagePrefix: 'hello'
+})
+
+const setTheme = () => {
+  dataManager.ss.mutation({ 
+    method: 'UPDATE',
+    path: 'theme',
+    params: {
+      primary: "#FF5533"
+    },
+  })
+}
+
+const deleteTheme = () => {
+  dataManager.ss.mutation({ 
+    method: 'DELETE',
+    path: 'theme',
+  })
+}
+
+const clearAllLocalStorage = () => {
+  dataManager.ss.mutation({ 
     method: 'CLEAR',
   })
 }
 ```
 
+- **Response**: `void`
+
+##### using with typeScript
+```ts
+import { createDataManager } from '@soie/data-manager'
+
+const dataManager = createDataManager({
+  storagePrefix: 'hello'
+})
+
+const setTheme = () => {
+  dataManager.ss.mutation<void>({ 
+    method: 'UPDATE',
+    path: 'theme',
+    params: {
+      primary: "#FF5533"
+    },
+  })
+}
+
+const deleteTheme = () => {
+  dataManager.ss.mutation<void>({ 
+    method: 'DELETE',
+    path: 'theme',
+  })
+}
+
+const clearAllLocalStorage = () => {
+  dataManager.ss.mutation<void>({ 
+    method: 'CLEAR',
+  })
+}
+```
+---
 ## GraphQL
 **endpoint**
   - **path**
