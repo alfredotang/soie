@@ -29,7 +29,7 @@ export type GraphQLEndpoint = {
   params: GraphQLParams
   requestInit?: Omit<RequestInit, 'method' | 'body'>
   transformer?: {
-    response: KeyCaseTransformer['response']
+    transformResponseToCamelCase?: boolean
   }
 }
 

@@ -9,7 +9,6 @@ import type {
   KeyCaseTransformer,
   Protocol,
 } from '@/data-manager/types'
-import { mergeKeyTransformerConfig } from '@/data-manager/utils'
 
 const endpointValidation = (endpoint: GraphQLEndpoint) => {
   validationFlow(
@@ -23,21 +22,18 @@ const endpointValidation = (endpoint: GraphQLEndpoint) => {
 }
 
 const GraphQL = async <TResult>(
-  { path, params, transformer, requestInit }: GraphQLEndpoint,
+  endpoint: GraphQLEndpoint,
   controller: Controller<'GraphQL'>
 ): Promise<FetcherResult<TResult>> => {
   try {
-    const response = await controller(path, {
-      ...requestInit,
-      body: JSON.stringify(params),
+    const response = await controller(endpoint.path, {
+      ...endpoint.requestInit,
+      body: JSON.stringify(endpoint.params),
     })
 
-    const { enabled, excludes, changeCase } = transformer?.response || {}
-
     return keyTransformer(response, {
-      enabled,
-      changeCase,
-      excludes,
+      enabled: endpoint.transformer?.transformResponseToCamelCase,
+      changeCase: 'camelcase',
     }) as FetcherResult<TResult>
   } catch (_error) {
     const error = _error as GraphQLFetcherError
@@ -48,20 +44,21 @@ const GraphQL = async <TResult>(
 const createGraphQL =
   ({
     controller,
-    transformer: defaultTransformer,
+    transformer,
   }: {
     controller: <P extends Protocol>(protocol: P) => Controller<P>
     transformer?: KeyCaseTransformer
   }) =>
   <TResult>(endpoint: GraphQLEndpoint) => {
     endpointValidation(endpoint)
-    const transformer = mergeKeyTransformerConfig(
-      defaultTransformer,
-      endpoint.transformer
-    )
-
     return GraphQL<TResult>(
-      { ...endpoint, transformer: { response: transformer.response } },
+      {
+        ...endpoint,
+        transformer: {
+          ...transformer,
+          ...endpoint.transformer,
+        },
+      },
       controller('GraphQL')
     )
   }

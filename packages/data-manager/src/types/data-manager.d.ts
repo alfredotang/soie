@@ -4,9 +4,8 @@ import type {
   FetcherError,
   FetcherRequestConfig,
 } from '@soie/fetcher'
-import type { Options as KeyTransformerOptions } from '@soie/utils/key-transformer'
 
-export { FetcherError, KeyTransformerOptions }
+export { FetcherError }
 
 export type DataManagerConfig = {
   requestConfig?: FetcherRequestConfig
@@ -15,8 +14,8 @@ export type DataManagerConfig = {
 }
 
 export type KeyCaseTransformer = {
-  request?: KeyTransformerOptions
-  response?: KeyTransformerOptions
+  transformRequestToSnakeCase?: boolean
+  transformResponseToCamelCase?: boolean
 }
 
 export type StorageProtocol = 'LocalStorage' | 'SessionStorage'
