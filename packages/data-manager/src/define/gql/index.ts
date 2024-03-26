@@ -5,12 +5,11 @@ import validationFlow from '@soie/utils/validation-flow'
 
 import type {
   Controller,
-  GraphQLEndpoint,
+  Endpoint,
   KeyCaseTransformer,
-  Protocol,
 } from '@/data-manager/types'
 
-const endpointValidation = (endpoint: GraphQLEndpoint) => {
+const endpointValidation = (endpoint: Endpoint<'GraphQL', never, never>) => {
   validationFlow(
     [endpoint.path, 'path is required'],
     [endpoint.params?.query, 'params.query is required'],
@@ -21,46 +20,43 @@ const endpointValidation = (endpoint: GraphQLEndpoint) => {
   )
 }
 
-const GraphQL = async <TResult>(
-  endpoint: GraphQLEndpoint,
-  controller: Controller<'GraphQL'>
-): Promise<FetcherResult<TResult>> => {
-  try {
-    const response = await controller(endpoint.path, {
-      ...endpoint.requestInit,
-      body: JSON.stringify(endpoint.params),
-    })
-
-    return keyTransformer(response, {
-      enabled: endpoint.transformer?.transformResponseToCamelCase,
-      changeCase: 'camelcase',
-    }) as FetcherResult<TResult>
-  } catch (_error) {
-    const error = _error as GraphQLFetcherError
-    throw error
-  }
-}
-
-const createGraphQL =
-  ({
-    controller,
-    transformer,
-  }: {
-    controller: <P extends Protocol>(protocol: P) => Controller<P>
-    transformer?: KeyCaseTransformer
-  }) =>
-  <TResult>(endpoint: GraphQLEndpoint) => {
+const createGraphQLExecutor =
+  (
+    controller: Controller<'GraphQL'>,
+    defaultTransformer?: {
+      transformResponseToCamelCase?: boolean | undefined
+    }
+  ) =>
+  async <TResult>(
+    endpoint: Endpoint<'GraphQL', never, never>
+  ): Promise<FetcherResult<TResult>> => {
     endpointValidation(endpoint)
-    return GraphQL<TResult>(
-      {
-        ...endpoint,
-        transformer: {
-          ...transformer,
-          ...endpoint.transformer,
-        },
-      },
-      controller('GraphQL')
-    )
+    const { transformResponseToCamelCase } = {
+      ...defaultTransformer,
+      ...endpoint.transformer,
+    }
+    try {
+      const response = await controller(endpoint.path, {
+        ...endpoint.requestInit,
+        body: JSON.stringify(endpoint.params),
+      })
+
+      return keyTransformer(response, {
+        enabled: transformResponseToCamelCase,
+        changeCase: 'camelcase',
+      }) as FetcherResult<TResult>
+    } catch (_error) {
+      const error = _error as GraphQLFetcherError
+      throw error
+    }
   }
+
+const createGraphQL = ({
+  controller,
+  transformer,
+}: {
+  controller: Controller<'GraphQL'>
+  transformer?: KeyCaseTransformer
+}) => createGraphQLExecutor(controller, transformer)
 
 export default createGraphQL

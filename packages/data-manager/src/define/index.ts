@@ -1,3 +1,3 @@
 export { default as createGraphQL } from './gql'
-export { default as createMutation } from './mutation'
-export { default as createQuery } from './query'
+export { default as createRestful } from './restful'
+export { default as createStorage } from './storage'

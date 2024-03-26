@@ -1,11 +1,6 @@
-import { createGraphQL, createMutation, createQuery } from './define'
+import { createGraphQL, createRestful, createStorage } from './define'
 import createInstances from './instances'
-import {
-  Controller,
-  DataManagerConfig,
-  KeyCaseTransformer,
-  Protocol,
-} from './types'
+import { DataManagerConfig, KeyCaseTransformer } from './types'
 
 export const createDataManager = ({
   requestConfig,
@@ -18,23 +13,38 @@ export const createDataManager = ({
     ..._transformer,
   }
 
-  const instances = createInstances(requestConfig)
+  const {
+    restfulController,
+    localStorageController,
+    sessionStorageController,
+    graphQLController,
+  } = createInstances(requestConfig)
 
-  const controller = <T extends Protocol>(protocol: T) => {
-    return instances[protocol] as Controller<T>
-  }
+  const { query, mutation } = createRestful({
+    controller: restfulController,
+    transformer: defaultTransformer,
+  })
+
+  const gql = createGraphQL({
+    controller: graphQLController,
+    transformer: defaultTransformer,
+  })
+  const ls = createStorage({
+    controller: localStorageController,
+    storagePrefix,
+    protocol: 'LocalStorage',
+  })
+  const ss = createStorage({
+    controller: sessionStorageController,
+    storagePrefix,
+    protocol: 'SessionStorage',
+  })
 
   return {
-    query: createQuery({
-      controller,
-      transformer: defaultTransformer,
-      storagePrefix,
-    }),
-    mutation: createMutation({
-      controller,
-      transformer: defaultTransformer,
-      storagePrefix,
-    }),
-    gql: createGraphQL({ controller, transformer: defaultTransformer }),
+    query,
+    mutation,
+    gql,
+    ls,
+    ss,
   }
 }

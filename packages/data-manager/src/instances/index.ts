@@ -8,10 +8,10 @@ import createStorageInstance from './storage'
 
 const createInstances = (requestConfig?: FetcherRequestConfig) => {
   return {
-    Restful: createFetcher(requestConfig),
-    LocalStorage: createStorageInstance('LocalStorage'),
-    SessionStorage: createStorageInstance('SessionStorage'),
-    GraphQL: createGraphQLFetcher(requestConfig),
+    restfulController: createFetcher(requestConfig),
+    localStorageController: createStorageInstance('LocalStorage'),
+    sessionStorageController: createStorageInstance('SessionStorage'),
+    graphQLController: createGraphQLFetcher(requestConfig),
   }
 }
 

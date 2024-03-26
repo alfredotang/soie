@@ -1,7 +1,4 @@
-import { createDataManager, type StorageProtocol } from '@soie/data-manager'
-
-import { MOCK_STORAGE } from '@/data-manager/constants/storage'
-import { buildStoragePath } from '@/data-manager/utils'
+import { createDataManager } from '@soie/data-manager'
 
 vi.mock('@/data-manager/constants/storage.ts', () => {
   const store = new Map<string, string>([
@@ -31,10 +28,6 @@ vi.mock('@/data-manager/constants/storage.ts', () => {
     clear: () => store.clear(),
   }
 
-  Object.keys(storage).forEach(key => {
-    Object.defineProperty(storage, key, { enumerable: false })
-  })
-
   store.forEach((_value, key) => {
     Object.defineProperty(storage, key, {
       writable: true,
@@ -50,66 +43,62 @@ vi.mock('@/data-manager/constants/storage.ts', () => {
 
 const storagePrefix = 'afu'
 
-const protocols: StorageProtocol[] = ['LocalStorage', 'SessionStorage'] as const
+const { ls, ss } = createDataManager({ storagePrefix })
 
-const d = createDataManager({ storagePrefix })
+const testCases = [
+  { protocol: 'LocalStorage', executor: ls },
+  { protocol: 'SessionStorage', executor: ss },
+] as const
 
 describe('dataManager storage', () => {
-  protocols.forEach(protocol => {
+  afterAll(() => {
+    vi.clearAllMocks()
+  })
+
+  testCases.forEach(({ protocol, executor }) => {
     describe(protocol, () => {
       describe('query', () => {
         describe('is storage exist', () => {
-          it('yes', async () => {
-            const data = await d.query({ protocol, path: 'hello' })
+          it('yes', () => {
+            const data = executor.query({ path: 'hello' })
             expect(data).toEqual({ name: protocol })
           })
-          it('no', async () => {
-            const data = await d.query({ protocol, path: 'world' })
+          it('no', () => {
+            const data = executor.query({ path: 'world' })
             expect(data).toBe(null)
           })
         })
       })
       describe('mutation', () => {
-        it('UPDATE', async () => {
+        it('UPDATE', () => {
           const method = 'UPDATE'
-          await d.mutation({
-            protocol,
+          executor.mutation({
             path: method,
             method,
             params: { name: protocol, value: 123 },
           })
-          const data = await d.query({ protocol, path: method })
+          const data = executor.query({ path: method })
           expect(data).toEqual({ name: protocol, value: 123 })
         })
 
-        it('DELETE', async () => {
+        it('DELETE', () => {
           const method = 'DELETE'
-          await d.mutation({
-            protocol,
+          executor.mutation({
             path: method,
             method,
           })
-          const data = await d.query({ protocol, path: method })
+          const data = executor.query({ path: method })
           expect(data).toBe(null)
         })
         it('CLEAR', async () => {
-          const method = 'CLEAR'
-          await d.mutation({
-            protocol,
-            method,
+          executor.mutation({
+            method: 'CLEAR',
           })
 
-          const path = buildStoragePath({
-            path: '',
-            prefix: storagePrefix,
-            protocol,
-          })
+          const data1 = executor.query({ path: 'hello' })
+          const data2 = executor.query({ path: 'UPDATE' })
 
-          const { length } = Object.keys(MOCK_STORAGE).filter(key =>
-            key.startsWith(path)
-          )
-
-          expect(length).toBe(0)
+          expect([data1, data2]).toEqual([null, null])
         })
       })
     })

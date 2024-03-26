@@ -1,12 +1,7 @@
 import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
 import type { StringifiableRecord as QueryStringStringifiableRecord } from 'query-string'
 
-import type {
-  KeyCaseTransformer,
-  ProtocolWithoutGQL,
-  RestProtocol,
-  StorageProtocol,
-} from './data-manager'
+import type { KeyCaseTransformer, StorageProtocol } from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
 export type {
@@ -24,6 +19,18 @@ export type GraphQLParams = {
   operationName?: string
 }
 
+export type Endpoint<
+  P extends Protocol,
+  E extends ExecuteType,
+  M extends Method,
+> = P extends 'GraphQL'
+  ? GraphQLEndpoint
+  : P extends 'Restful'
+    ? RestfulEndpoint<E>
+    : P extends StorageProtocol
+      ? StorageEndpoint<E, M>
+      : never
+
 export type GraphQLEndpoint = {
   path: string
   params: GraphQLParams
@@ -33,42 +40,14 @@ export type GraphQLEndpoint = {
   }
 }
 
-export type Endpoint<
-  E extends ExecuteType,
-  M extends Method,
-  P extends ProtocolWithoutGQL = RestProtocol,
-> = EndpointExecutor<E, P, M>
-
-export type EndpointExecutor<
-  E extends ExecuteType,
-  P extends ProtocolWithoutGQL,
-  M extends Method,
-> = E extends 'Query'
-  ? QueryProtocolEndpoint<P>
+export type RestfulEndpoint<E extends ExecuteType> = E extends 'Query'
+  ? RestfulEndpoints['query']
   : E extends 'Mutation'
-    ? MutationProtocolEndpoint<P, M>
+    ? RestfulEndpoints['mutation']
     : never
 
-export type QueryProtocolEndpoint<P extends ProtocolWithoutGQL> =
-  P extends RestProtocol
-    ? QueryEndpoints['restful'] & { protocol?: P }
-    : P extends StorageProtocol
-      ? QueryEndpoints['storage'] & { protocol: P }
-      : never
-
-export type MutationProtocolEndpoint<
-  P extends ProtocolWithoutGQL,
-  M extends Method,
-> = P extends RestProtocol
-  ? MutationRestEndpoint & { protocol?: P; method: M }
-  : P extends StorageProtocol
-    ? M extends StorageMutationMethod
-      ? MutationStorageEndpoints<M> & { protocol: P; method: M }
-      : never
-    : never
-
-export type QueryEndpoints = {
-  restful: {
+export type RestfulEndpoints = {
+  query: {
     path: string
     params?: QueryStringStringifiableRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
@@ -82,29 +61,38 @@ export type QueryEndpoints = {
       | 'colon-list-separator'
       | 'none'
   }
-  storage: {
+  mutation: {
     path: string
+    method: RestfulMethod
+    params?: StringifiableRecord | FormData
+    requestInit?: Omit<RequestInit, 'method' | 'body'>
+    transformer?: KeyCaseTransformer
   }
 }
 
-export type MutationRestEndpoint = {
-  path: string
-  method: RestfulMethod
-  params?: StringifiableRecord | FormData
-  requestInit?: Omit<RequestInit, 'method' | 'body'>
-  transformer?: KeyCaseTransformer
-}
+export type StorageEndpoint<
+  E extends ExecuteType,
+  M extends StorageMutationMethod,
+> = E extends 'Query'
+  ? {
+      path: string
+    }
+  : E extends 'Mutation'
+    ? StorageMutationEndpoints<M>
+    : never
 
-export type MutationStorageEndpoints<M extends StorageMutationMethod> =
+export type StorageMutationEndpoints<M extends StorageMutationMethod> =
   M extends 'DELETE'
     ? {
         path: string
+        method: M
       }
     : M extends 'UPDATE'
       ? {
           path: string
+          method: M
           params: Stringifiable | StringifiableRecord
         }
       : M extends 'CLEAR'
-        ? object
+        ? { method: M }
         : never
