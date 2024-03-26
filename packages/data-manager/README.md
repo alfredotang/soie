@@ -93,7 +93,7 @@ pnpm add @soie/data-manager
     - [array format](https://www.npmjs.com/package/query-string#arrayformat-1)
     - **type**: `'bracket' | 'index' | 'comma' | 'separator' | 'bracket-separator' | 'colon-list-separator' | 'none'`
     - **default**: `'none'`
-  - - **transformer**
+  - **transformer**
     - only transform key case in this request
       - **transformRequestToSnakeCase**: transform your request body or query string key into snake case
       - **transformResponseToCamelCase**: transform your response body's key into camel case
@@ -267,7 +267,7 @@ const getTheme = async (): Promise<Theme> => {
   - **method**
     - Request method
     - **type**: `'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'`
-  - - **transformer**
+  - **transformer**
     - Only transforms key case in this request
       - **transformRequestToSnakeCase**: Transforms your request body or query string key into snake case
       - **transformResponseToCamelCase**: Transforms your response body's key into camel case
@@ -493,7 +493,7 @@ const clearAllLocalStorage = async () => {
     - **variables**: graphql query variables, optional
     - **operationName**: graphql operation name, optional
 
-  - - **transformer**
+  - **transformer**
     - only transform key case in this request
       - **transformResponseToCamelCase**: transform your response body's key into camel case
     - `transformRequestToSnakeCase` is not provided because that will impact graphql query
