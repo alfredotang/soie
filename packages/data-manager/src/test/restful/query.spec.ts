@@ -1,8 +1,7 @@
 import { createDataManager } from '@soie/data-manager'
+import { asyncErrorWrapper } from '@soie/utils/test-utils'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-
-import asyncErrorWrapper from '@/data-manager/test/__test__/async-error-wrapper'
 
 const baseURL = 'https://api.afu.com/v1'
 
