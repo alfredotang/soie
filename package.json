@@ -5,7 +5,8 @@
   "description": "Alfredo's npm packages",
   "license": "MIT",
   "scripts": {
-    "nx": "nx"
+    "nx": "nx",
+    "test": "nx run-many -t test"
   },
   "private": false,
   "devDependencies": {

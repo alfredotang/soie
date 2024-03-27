@@ -32,4 +32,4 @@ jobs:
       - name: Test
         env:
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-        run: pnpm nx run-many -t test
+        run: pnpm test
