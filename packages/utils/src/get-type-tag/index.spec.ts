@@ -14,6 +14,7 @@ const testCase: Array<[unknown, TypeTag]> = [
   [new RegExp('hello'), 'RegExp'],
   [new Date(), 'Date'],
   [new Error('hello'), 'Error'],
+  [new Headers(), 'Headers'],
 ]
 
 describe('getTypeTag', () => {

@@ -14,6 +14,7 @@ export type TypeTag =
   | 'RegExp'
   | 'Error'
   | 'Date'
+  | 'Headers'
 
 export default function getTypeTag(value: unknown): TypeTag {
   if (typeof value === 'number' && isNaN(value)) return 'NaN'
