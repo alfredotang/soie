@@ -1,38 +1,44 @@
+import getPropertySafe from '@soie/utils/get-property-safe'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+
 import type { FetcherError } from '@/fetcher/types'
 import getSafeMessage from '@/fetcher/utils/get-safe-message'
 
-const createFetcherError = (_error: unknown): FetcherError => {
-  if (typeof _error === 'object' && _error) {
-    let status, statusText, message, headers
-    if ('status' in _error) {
-      status = _error.status as number
-    }
+const createFetcherError = (error: unknown): FetcherError => {
+  const status = getPropertySafe({
+    target: error,
+    propertyName: 'status',
+    type: 'Number',
+    defaultValue: StatusCodes.INTERNAL_SERVER_ERROR as number,
+  })
 
-    if ('statusText' in _error) {
-      statusText = _error.statusText as string
-    }
+  const statusText = getPropertySafe({
+    target: error,
+    propertyName: 'statusText',
+    type: 'String',
+    defaultValue: getReasonPhrase(status),
+  })
 
-    if ('headers' in _error) {
-      headers = _error.headers as Headers
-    }
+  const headers = getPropertySafe({
+    target: error,
+    propertyName: 'headers',
+    type: 'Headers',
+    defaultValue: new Headers(),
+  })
 
-    if ('message' in _error) {
-      message = getSafeMessage(_error.message)
-    }
-
-    return {
-      status: status || 500,
-      statusText: statusText || 'error',
-      headers: headers || new Headers(),
-      message: message || 'error',
-    }
-  }
+  const _message = getPropertySafe({
+    target: error,
+    propertyName: 'message',
+    type: 'String',
+    defaultValue: 'error',
+  })
+  const message = getSafeMessage(_message)
 
   return {
-    status: 500,
-    statusText: 'error',
-    headers: new Headers(),
-    message: 'error',
+    status,
+    statusText,
+    headers,
+    message,
   }
 }
 export default createFetcherError

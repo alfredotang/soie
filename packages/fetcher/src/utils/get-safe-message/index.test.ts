@@ -6,6 +6,11 @@ describe('getSafeMessage', () => {
       expect(getSafeMessage('{ "hello:')).toBe('{ "hello:')
     })
   })
+  describe('message is not string', () => {
+    it('should returned "error"', () => {
+      expect(getSafeMessage(2)).toBe('error')
+    })
+  })
   describe('message can be pared by JSON.pares', () => {
     it('should returned object', () => {
       expect(getSafeMessage(JSON.stringify({ hello: 'world' }))).toEqual({

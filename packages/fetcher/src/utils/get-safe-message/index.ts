@@ -7,10 +7,7 @@ export const getSafeMessage = (message: unknown): FetcherError['message'] => {
     }
     return 'error'
   } catch {
-    if (typeof message === 'string') {
-      return message
-    }
-    return 'error'
+    return message as string
   }
 }
 

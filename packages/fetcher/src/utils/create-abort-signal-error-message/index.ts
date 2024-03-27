@@ -1,12 +1,15 @@
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+
 import type { FetcherError } from '@/fetcher/types'
 
-const createAbortSignalErrorMessage = (message?: string): FetcherError => {
-  const statusText = 'AbortError: The operation was aborted'
+const createAbortSignalErrorMessage = (): FetcherError => {
+  const status = StatusCodes.REQUEST_TIMEOUT
+  const message = 'AbortError: The operation was aborted'
   return {
-    status: 500,
-    statusText,
+    status,
+    statusText: getReasonPhrase(status),
     headers: new Headers(),
-    message: message || statusText,
+    message,
   }
 }
 
