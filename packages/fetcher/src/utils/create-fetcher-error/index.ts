@@ -1,5 +1,8 @@
+import {
+  STATUS_CODE_DICT,
+  STATUS_DESCRIPTION_DICT,
+} from '@soie/utils/constants/http-status-code'
 import getPropertySafe from '@soie/utils/get-property-safe'
-import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 import type { FetcherError } from '@/fetcher/types'
 import getSafeMessage from '@/fetcher/utils/get-safe-message'
@@ -9,14 +12,14 @@ const createFetcherError = (error: unknown): FetcherError => {
     target: error,
     propertyName: 'status',
     type: 'Number',
-    defaultValue: StatusCodes.INTERNAL_SERVER_ERROR as number,
+    defaultValue: STATUS_DESCRIPTION_DICT.INTERNAL_SERVER_ERROR,
   })
 
   const statusText = getPropertySafe({
     target: error,
     propertyName: 'statusText',
     type: 'String',
-    defaultValue: getReasonPhrase(status),
+    defaultValue: STATUS_CODE_DICT[status],
   })
 
   const headers = getPropertySafe({

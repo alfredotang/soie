@@ -1,13 +1,16 @@
-import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+import {
+  STATUS_CODE_DICT,
+  STATUS_DESCRIPTION_DICT,
+} from '@soie/utils/constants/http-status-code'
 
 import type { FetcherError } from '@/fetcher/types'
 
 const createAbortSignalErrorMessage = (): FetcherError => {
-  const status = StatusCodes.REQUEST_TIMEOUT
+  const status = STATUS_DESCRIPTION_DICT.REQUEST_TIMEOUT
   const message = 'AbortError: The operation was aborted'
   return {
     status,
-    statusText: getReasonPhrase(status),
+    statusText: STATUS_CODE_DICT[status],
     headers: new Headers(),
     message,
   }

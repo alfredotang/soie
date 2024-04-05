@@ -34,8 +34,5 @@
       "import": "./index.mjs",
       "types": "./index.d.ts"
     }
-  },
-  "dependencies": {
-    "http-status-codes": "^2.3.0"
   }
 }
