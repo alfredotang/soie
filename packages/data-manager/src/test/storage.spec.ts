@@ -1,40 +1,25 @@
 import { createDataManager } from '@soie/data-manager'
 
+import { MOCK_STORAGE } from '@/data-manager/constants/storage'
+
 vi.mock('@/data-manager/constants/storage.ts', () => {
-  const store = new Map<string, string>([
-    ['hello', 'outer'],
-    [`afu-ss-hello`, JSON.stringify({ name: 'SessionStorage' })],
-    [`afu-ls-hello`, JSON.stringify({ name: 'LocalStorage' })],
-    [`afu-ss-update`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
-    [`afu-ls-update`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
-    [`afu-ss-delete`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
-    [`afu-ls-delete`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
-  ])
-  const storage = {
-    getItem: (key: string) => store.get(key),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const storage: any = {
+    hello: 'outer',
+    'afu-ss-hello': JSON.stringify({ name: 'SessionStorage' }),
+    'afu-ls-hello': JSON.stringify({ name: 'LocalStorage' }),
+    'afu-ss-update': JSON.stringify({ name: 'SessionStorage', value: 0 }),
+    'afu-ls-update': JSON.stringify({ name: 'LocalStorage', value: 0 }),
+    'afu-ss-delete': JSON.stringify({ name: 'SessionStorage', value: 0 }),
+    'afu-ls-delete': JSON.stringify({ name: 'LocalStorage', value: 0 }),
+    getItem: (key: string) => storage[key],
     setItem: (key: string, value: string) => {
-      store.set(key, value)
-      Object.defineProperty(storage, key, {
-        writable: true,
-        enumerable: true,
-        configurable: true,
-        value,
-      })
+      storage[key] = value
     },
     removeItem: (key: string) => {
-      store.delete(key)
-      Object.defineProperty(storage, key, { enumerable: false })
+      delete storage[key]
     },
-    clear: () => store.clear(),
   }
-
-  store.forEach((_value, key) => {
-    Object.defineProperty(storage, key, {
-      writable: true,
-      enumerable: true,
-      configurable: true,
-    })
-  })
 
   return {
     MOCK_STORAGE: storage,
@@ -46,8 +31,8 @@ const storagePrefix = 'afu'
 const { ls, ss } = createDataManager({ storagePrefix })
 
 const testCases = [
-  { protocol: 'LocalStorage', executor: ls },
-  { protocol: 'SessionStorage', executor: ss },
+  { protocol: 'LocalStorage', executor: ls, prefix: 'afu-ls' },
+  { protocol: 'SessionStorage', executor: ss, prefix: 'afu-ss' },
 ] as const
 
 describe('dataManager storage', () => {
@@ -55,7 +40,7 @@ describe('dataManager storage', () => {
     vi.clearAllMocks()
   })
 
-  testCases.forEach(({ protocol, executor }) => {
+  testCases.forEach(({ protocol, executor, prefix }) => {
     describe(protocol, () => {
       describe('query', () => {
         describe('is storage exist', () => {
@@ -83,13 +68,19 @@ describe('dataManager storage', () => {
           const data = executor.query(path)
           expect(data).toBe(null)
         })
-        it('CLEAR', async () => {
-          executor.clear()
-
-          const data1 = executor.query('hello')
-          const data2 = executor.query('update')
-
-          expect([data1, data2]).toEqual([null, null])
+        describe('CLEAR', async () => {
+          beforeAll(() => {
+            executor.clear()
+          })
+          it('own key should be cleared', () => {
+            const { length } = Object.keys(MOCK_STORAGE).filter(key =>
+              key.startsWith(prefix)
+            )
+            expect(length).toBe(0)
+          })
+          it('outer key should be keep', () => {
+            expect(MOCK_STORAGE['hello']).toBe('outer')
+          })
         })
       })
     })
