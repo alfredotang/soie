@@ -588,7 +588,7 @@ const clearAllLocalStorage = () => {
     - **type**: string
   - **params**
     ```js
-    const { data } = await dataManager.gal({
+    const { data } = await dataManager.gql({
       path: 'https://someapi/graphql',
       params: { 
         query: `
