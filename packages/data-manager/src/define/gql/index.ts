@@ -1,20 +1,7 @@
 import type { FetcherResult, GraphQLFetcherError } from '@soie/fetcher'
-import getTypeTag from '@soie/utils/get-type-tag'
 import keyTransformer from '@soie/utils/key-transformer'
-import validationFlow from '@soie/utils/validation-flow'
 
 import type { Controller, Endpoint } from '@/data-manager/types'
-
-const endpointValidation = (endpoint: Endpoint<'GraphQL', never>) => {
-  validationFlow(
-    [endpoint.path, 'path is required'],
-    [endpoint.params?.query, 'params.query is required'],
-    [
-      getTypeTag(endpoint.params?.query) === 'String',
-      'params.query should be string',
-    ]
-  )
-}
 
 export const createGraphQL =
   (
@@ -26,7 +13,6 @@ export const createGraphQL =
   async <TResult>(
     endpoint: Endpoint<'GraphQL', never>
   ): Promise<FetcherResult<TResult>> => {
-    endpointValidation(endpoint)
     const { transformResponseToCamelCase } = {
       ...defaultTransformer,
       ...endpoint.transformer,
