@@ -1,14 +1,9 @@
 import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
-import type { StringifiableRecord as QueryStringStringifiableRecord } from 'query-string'
 
-import type { KeyCaseTransformer, StorageProtocol } from './data-manager'
+import type { KeyCaseTransformer } from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
-export type {
-  QueryStringStringifiableRecord,
-  Stringifiable,
-  StringifiableRecord,
-}
+export type { Stringifiable, StringifiableRecord }
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
@@ -22,14 +17,11 @@ export type GraphQLParams = {
 export type Endpoint<
   P extends Protocol,
   E extends ExecuteType,
-  M extends Method,
 > = P extends 'GraphQL'
   ? GraphQLEndpoint
   : P extends 'Restful'
     ? RestfulEndpoint<E>
-    : P extends StorageProtocol
-      ? StorageEndpoint<E, M>
-      : never
+    : never
 
 export type GraphQLEndpoint = {
   path: string
@@ -69,28 +61,3 @@ export type RestfulEndpoints = {
     transformer?: KeyCaseTransformer
   }
 }
-
-export type StorageEndpoint<
-  E extends ExecuteType,
-  M extends StorageMutationMethod,
-> = E extends 'Query'
-  ? string
-  : E extends 'Mutation'
-    ? StorageMutationEndpoints<M>
-    : never
-
-export type StorageMutationEndpoints<M extends StorageMutationMethod> =
-  M extends 'DELETE'
-    ? {
-        path: string
-        method: M
-      }
-    : M extends 'UPDATE'
-      ? {
-          path: string
-          method: M
-          params: Stringifiable | StringifiableRecord
-        }
-      : M extends 'CLEAR'
-        ? { method: M }
-        : never

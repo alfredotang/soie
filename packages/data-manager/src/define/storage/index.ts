@@ -1,25 +1,69 @@
-import type { Controller, StorageProtocol } from '@/data-manager/types'
+import getTypeTag from '@soie/utils/get-type-tag'
+import validationFlow from '@soie/utils/validation-flow'
 
-import createStorageMutationExecutor from './mutation'
-import createStorageQueryExecutor from './query'
+import type {
+  Controller,
+  StorageProtocol,
+  Stringifiable,
+  StringifiableRecord,
+} from '@/data-manager/types'
+import { buildStoragePath } from '@/data-manager/utils'
 
-const createStorage = ({
-  storagePrefix,
-  controller,
-  protocol,
-}: {
-  storagePrefix: string
-  controller: Controller<StorageProtocol>
-  protocol: StorageProtocol
-}) => {
-  return {
-    query: createStorageQueryExecutor({ storagePrefix, controller, protocol }),
-    mutation: createStorageMutationExecutor({
-      storagePrefix,
-      controller,
-      protocol,
-    }),
+export default class StorageExecutor {
+  private storagePrefix: string
+  private controller: Controller<StorageProtocol>
+  private protocol: StorageProtocol
+
+  private buildPath(path: string = '') {
+    return buildStoragePath({
+      path,
+      prefix: this.storagePrefix,
+      protocol: this.protocol,
+    })
+  }
+
+  private isOwnStorage = (key: string) => {
+    const path = this.buildPath()
+    return key.startsWith(path)
+  }
+
+  constructor(
+    storagePrefix: string,
+    controller: Controller<StorageProtocol>,
+    protocol: StorageProtocol
+  ) {
+    this.storagePrefix = storagePrefix
+    this.controller = controller
+    this.protocol = protocol
+  }
+
+  public query<TResult>(path: string) {
+    validationFlow([path, 'path is required'])
+    const result = this.controller.getItem(this.buildPath(path))
+    return result ? (JSON.parse(result) as TResult) : null
+  }
+
+  public update(path: string, params: Stringifiable | StringifiableRecord) {
+    validationFlow(
+      [path, `path is required`],
+      [
+        getTypeTag(params) !== 'Undefined',
+        `params is required and can't be assigned to "undefined"`,
+      ]
+    )
+    this.controller.setItem(this.buildPath(path), JSON.stringify(params))
+  }
+
+  public delete(path: string) {
+    validationFlow([path, `path is required`])
+    this.controller.removeItem(this.buildPath(path))
+  }
+
+  public clear() {
+    Object.keys(this.controller)
+      .filter(this.isOwnStorage)
+      .forEach(key => {
+        this.controller.removeItem(key)
+      })
   }
 }
-
-export default createStorage

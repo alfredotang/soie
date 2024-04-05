@@ -5,10 +5,10 @@ vi.mock('@/data-manager/constants/storage.ts', () => {
     ['hello', 'outer'],
     [`afu-ss-hello`, JSON.stringify({ name: 'SessionStorage' })],
     [`afu-ls-hello`, JSON.stringify({ name: 'LocalStorage' })],
-    [`afu-ss-UPDATE`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
-    [`afu-ls-UPDATE`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
-    [`afu-ss-DELETE`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
-    [`afu-ls-DELETE`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
+    [`afu-ss-update`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
+    [`afu-ls-update`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
+    [`afu-ss-delete`, JSON.stringify({ name: 'SessionStorage', value: 0 })],
+    [`afu-ls-delete`, JSON.stringify({ name: 'LocalStorage', value: 0 })],
   ])
   const storage = {
     getItem: (key: string) => store.get(key),
@@ -70,33 +70,24 @@ describe('dataManager storage', () => {
         })
       })
       describe('mutation', () => {
-        it('UPDATE', () => {
-          const method = 'UPDATE'
-          executor.mutation({
-            path: method,
-            method,
-            params: { name: protocol, value: 123 },
-          })
-          const data = executor.query(method)
+        it('update', () => {
+          const path = 'update'
+          executor.update(path, { name: protocol, value: 123 })
+          const data = executor.query(path)
           expect(data).toEqual({ name: protocol, value: 123 })
         })
 
         it('DELETE', () => {
-          const method = 'DELETE'
-          executor.mutation({
-            path: method,
-            method,
-          })
-          const data = executor.query(method)
+          const path = 'delete'
+          executor.delete(path)
+          const data = executor.query(path)
           expect(data).toBe(null)
         })
         it('CLEAR', async () => {
-          executor.mutation({
-            method: 'CLEAR',
-          })
+          executor.clear()
 
           const data1 = executor.query('hello')
-          const data2 = executor.query('UPDATE')
+          const data2 = executor.query('update')
 
           expect([data1, data2]).toEqual([null, null])
         })

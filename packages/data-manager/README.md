@@ -9,30 +9,25 @@ The **@soie/data-manager** library is designed to encapsulate Restful, GraphQL, 
   - [Configuration Options](#configuration-options)
     - [createDataManager](#createdatamanager)
   - [Restful](#restful)
-    - [Query](#query)
+    - [query](#query)
       - [Usage](#usage)
       - [Using with TypeScript](#using-with-typescript)
-    - [Mutation](#mutation)
-      - [usage](#usage-1)
-      - [using with typeScript](#using-with-typescript-1)
+    - [mutation](#mutation)
+      - [Usage](#usage-1)
+      - [Using with typeScript](#using-with-typescript-1)
   - [Storage](#storage)
-    - [LocalStorage](#localstorage)
-      - [Query](#query-1)
-        - [Usage](#usage-2)
-        - [Using with TypeScript](#using-with-typescript-2)
-      - [Mutation](#mutation-1)
-        - [usage](#usage-3)
-        - [using with typeScript](#using-with-typescript-3)
-    - [SessionStorage](#sessionstorage)
-      - [Query](#query-2)
-        - [Usage](#usage-4)
-        - [Using with TypeScript](#using-with-typescript-4)
-      - [Mutation](#mutation-2)
-        - [usage](#usage-5)
-        - [using with typeScript](#using-with-typescript-5)
+    - [query](#query-1)
+      - [Usage](#usage-2)
+      - [Using with TypeScript](#using-with-typescript-2)
+    - [update](#update)
+      - [Usage](#usage-3)
+    - [delete](#delete)
+      - [Usage](#usage-4)
+    - [clear](#clear)
+      - [Usage](#usage-5)
   - [GraphQL](#graphql)
     - [Usage](#usage-6)
-    - [Using with TypeScript](#using-with-typescript-6)
+    - [Using with TypeScript](#using-with-typescript-3)
 
 ## Installation
 Using npm:
@@ -81,8 +76,8 @@ pnpm add @soie/data-manager
 
 ---
 ## Restful
-### Query
-**endpoint**
+### query
+- **endpoint**
   - **path**
     - **type**: string
   - **params**
@@ -109,6 +104,33 @@ pnpm add @soie/data-manager
     - **default**: by global `transformer`
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+- **response**
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding to the status code
+    - **type**: string
+  - **header**
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+    - Use `headers.get('your header key')` to get the header's value.
+  - **data**
+    - The API response body in JSON format
+- **errors**
+  - If there is a request error, it will always return an `error` object
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding to the status code
+    - **type**: string
+  - **header**
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+    - Use `headers.get('your header key')` to get the header's value
+  - **message**
+    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
 
 #### Usage
 ```js
@@ -139,35 +161,6 @@ const getPokemonList = async () => {
   return data
 }
 ```
-- **response**
-  - No need to use `response.json()`, as the fetcher maps response data into:
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value.
-  - **data**
-    - The API response body in JSON format
-- **errors**
-  - If there is a request error, it will always return an `error` object
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value
-  - **message**
-    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
-
 #### Using with TypeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'
@@ -175,8 +168,6 @@ import { createDataManager } from '@soie/data-manager'
 type PokemonList = {
   // ...
 }
-
-
 
 const dataManager = createDataManager ({
   requestConfig: {
@@ -203,8 +194,8 @@ const getPokemonList = async (): Promise<PokemonList> => {
   return data
 }
 ```
-### Mutation
-**endpoint**
+### mutation
+- **endpoint**
   - **path**
     - **type**: string
   - **params**
@@ -221,8 +212,36 @@ const getPokemonList = async (): Promise<PokemonList> => {
     - **default**: Global `transformer`
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+- **response**
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding to the status code
+    - **type**: string
+  - **header**
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+    - Use `headers.get('your header key')` to get the header's value.
+  - **data**
+    - The API response body in JSON format
 
-#### usage
+- **errors**
+  - If there is a request error, it will always return an `error` object
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding to the status code
+    - **type**: string
+  - **header**
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+    - Use `headers.get('your header key')` to get the header's value
+  - **message**
+    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
+
+#### Usage
 ```js
 import { createDataManager } from '@soie/data-manager'
 
@@ -250,38 +269,7 @@ const postPokemonName = async () => {
   })
 }
 ```
-
-- **response**
-  - No need to use `response.json()`, as the fetcher maps response data into:
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value.
-  - **data**
-    - The API response body in JSON format
-
-- **errors**
-  - If there is a request error, it will always return an `error` object
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value
-  - **message**
-    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
-
-#### using with typeScript
+#### Using with typeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'
 
@@ -311,19 +299,18 @@ const postPokemonName = async () => {
 ```
 ---
 ## Storage
-### LocalStorage
-#### Query
-**endpoint**
+### query
+- **endpoint**
   - **path**
-    - storage key
-    - **type**: string
-    ```js
-    const { data } = dataManager.ls.query('theme')
-
-    // storage key will be generated to 
-    // `${storagePrefix}-ls-theme`
-    ```
-##### Usage
+    - storage key, will be generated to
+      - localStorage
+        - `${storagePrefix}-ls-${ your key }`
+      - sessionStorage
+        - `${storagePrefix}-ss-${ your key }`
+- **return**
+  - **data**
+    - `string` or `JSON` for storage
+#### Usage
 ```js
 import { createDataManager } from '@soie/data-manager'
 
@@ -331,150 +318,19 @@ const dataManager = createDataManager ({
   storagePrefix: 'hello'
 })
 
-const getTheme = () => {
+// localStorage
+const getLocalTheme = () => {
   const data = dataManager.ls.query('theme')
   return data
 }
-```
-- **response**
-  - **data**
-    - `string` or `JSON` for storage
-##### Using with TypeScript
-```ts
-import { createDataManager } from '@soie/data-manager'
 
-type Theme = {
-  // ...
-}
-
-const dataManager = createDataManager ({
-  storagePrefix: 'hello'
-})
-
-const getTheme = (): Theme => {
-  const data = dataManager.ls.query<Theme>('theme')
-  return data
-}
-```
-#### Mutation
-**endpoint**
-  - **path**
-    - Storage key
-    - **type**: string
-    ```js
-    dataManager.ls.mutation({
-      method: 'UPDATE',
-      path: 'theme',
-      params: {
-        primary: '#FF5534'
-      }
-    })
-
-    // Storage key will be generated to 
-    // `${storagePrefix}-ls-theme`
-    ```
-  - **method**
-    - **type**: `'UPDATE' | 'CLEAR' | 'DELETE'`
-    - `UPDATE`: storage.setItem
-    - `DELETE`: storage.deleteItem
-    - `CLEAR`: clear all storage by prefix is `${storagePrefix}`
-  - **params**
-    - When using `UPDATE`, you need to pass value
-
-##### usage
-```js
-import { createDataManager } from '@soie/data-manager'
-
-const dataManager = createDataManager({
-  storagePrefix: 'hello'
-})
-
-const setTheme = () => {
-  dataManager.ls.mutation({ 
-    method: 'UPDATE',
-    path: 'theme',
-    params: {
-      primary: "#FF5533"
-    },
-  })
-}
-
-const deleteTheme = () => {
-  dataManager.ls.mutation({ 
-    method: 'DELETE',
-    path: 'theme',
-  })
-}
-
-const clearAllLocalStorage = () => {
-  dataManager.ls.mutation({ 
-    method: 'CLEAR',
-  })
-}
-```
-
-- **Response**: `void`
-
-##### using with typeScript
-```ts
-import { createDataManager } from '@soie/data-manager'
-
-const dataManager = createDataManager({
-  storagePrefix: 'hello'
-})
-
-const setTheme = () => {
-  dataManager.ls.mutation<void>({ 
-    method: 'UPDATE',
-    path: 'theme',
-    params: {
-      primary: "#FF5533"
-    },
-  })
-}
-
-const deleteTheme = () => {
-  dataManager.ls.mutation<void>({ 
-    method: 'DELETE',
-    path: 'theme',
-  })
-}
-
-const clearAllLocalStorage = () => {
-  dataManager.ls.mutation<void>({ 
-    method: 'CLEAR',
-  })
-}
-```
-### SessionStorage
-#### Query
-**endpoint**
-  - **path**
-    - storage key
-    - **type**: string
-    ```js
-    const { data } = dataManager.ss.query('theme')
-
-    // storage key will be generated to 
-    // `${storagePrefix}-ss-theme`
-    ```
-##### Usage
-```js
-import { createDataManager } from '@soie/data-manager'
-
-const dataManager = createDataManager ({
-  storagePrefix: 'hello'
-})
-
-const getTheme = () => {
+// sessionStorage
+const getSessionTheme = () => {
   const data = dataManager.ss.query('theme')
   return data
 }
 ```
-- **response**
-  - **data**
-    - `string` or `JSON` for storage
-##### Using with TypeScript
+#### Using with TypeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'
 
@@ -486,37 +342,30 @@ const dataManager = createDataManager ({
   storagePrefix: 'hello'
 })
 
-const getTheme = (): Theme => {
+// localStorage
+const getLocalTheme = () => {
+  const data = dataManager.ls.query<Theme>('theme')
+  return data
+}
+
+// sessionStorage
+const getSessionTheme = () => {
   const data = dataManager.ss.query<Theme>('theme')
   return data
 }
 ```
-#### Mutation
-**endpoint**
+### update
+- **endpoint**
   - **path**
-    - Storage key
-    - **type**: string
-    ```js
-    dataManager.ss.mutation({
-      method: 'UPDATE',
-      path: 'theme',
-      params: {
-        primary: '#FF5534'
-      }
-    })
-
-    // Storage key will be generated to 
-    // `${storagePrefix}-ss-theme`
-    ```
-  - **method**
-    - **type**: `'UPDATE' | 'CLEAR' | 'DELETE'`
-    - `UPDATE`: storage.setItem
-    - `DELETE`: storage.deleteItem
-    - `CLEAR`: clear all storage by prefix is `${storagePrefix}`
+    - storage key, will be generated to
+      - localStorage
+        - `${storagePrefix}-ls-${ your key }`
+      - sessionStorage
+        - `${storagePrefix}-ss-${ your key }`
   - **params**
-    - When using `UPDATE`, you need to pass value
-
-##### usage
+    - any javascript `object`
+- **return**: `void`
+#### Usage
 ```js
 import { createDataManager } from '@soie/data-manager'
 
@@ -524,90 +373,87 @@ const dataManager = createDataManager({
   storagePrefix: 'hello'
 })
 
-const setTheme = () => {
-  dataManager.ss.mutation({ 
-    method: 'UPDATE',
-    path: 'theme',
-    params: {
+// localStorage
+const setLocalTheme = () => {
+  dataManager.ls.update(
+    'theme', 
+    {
       primary: "#FF5533"
     },
-  })
+  )
 }
 
-const deleteTheme = () => {
-  dataManager.ss.mutation({ 
-    method: 'DELETE',
-    path: 'theme',
-  })
-}
-
-const clearAllLocalStorage = () => {
-  dataManager.ss.mutation({ 
-    method: 'CLEAR',
-  })
+// sessionStorage
+const setSessionTheme = () => {
+  dataManager.ss.update(
+    'theme', 
+    {
+      primary: "#FF5533"
+    },
+  )
 }
 ```
-
-- **Response**: `void`
-
-##### using with typeScript
-```ts
+### delete
+- **endpoint**
+  - **path**
+    - storage key, will be generated to
+      - localStorage
+        - `${storagePrefix}-ls-${ your key }`
+      - sessionStorage
+        - `${storagePrefix}-ss-${ your key }`
+- **return**: `void`
+#### Usage
+```js
 import { createDataManager } from '@soie/data-manager'
 
 const dataManager = createDataManager({
   storagePrefix: 'hello'
 })
 
-const setTheme = () => {
-  dataManager.ss.mutation<void>({ 
-    method: 'UPDATE',
-    path: 'theme',
-    params: {
-      primary: "#FF5533"
-    },
-  })
+// localStorage
+const deleteLocalTheme = () => {
+  dataManager.ls.delete('theme')
 }
 
-const deleteTheme = () => {
-  dataManager.ss.mutation<void>({ 
-    method: 'DELETE',
-    path: 'theme',
-  })
+// sessionStorage
+const deleteSessionTheme = () => {
+  dataManager.ss.delete('theme')
 }
+```
+### clear
+- clear all storage by prefix is 
+  - localStorage
+    - `${storagePrefix}-ls`
+  - sessionStorage
+    - `${storagePrefix}-ss`
+- **return**: `void`
+#### Usage
+```js
+import { createDataManager } from '@soie/data-manager'
 
+const dataManager = createDataManager({
+  storagePrefix: 'hello'
+})
+
+// localStorage
 const clearAllLocalStorage = () => {
-  dataManager.ss.mutation<void>({ 
-    method: 'CLEAR',
-  })
+  dataManager.ls.clear()
+}
+
+// sessionStorage
+const clearAllSessionStorage = () => {
+  dataManager.ss.clear()
 }
 ```
 ---
 ## GraphQL
-**endpoint**
+- **endpoint**
   - **path**
     - **type**: string
   - **params**
-    ```js
-    const { data } = await dataManager.gql({
-      path: 'https://someapi/graphql',
-      params: { 
-        query: `
-          query locationAlola($region: String) {
-            region: pokemon_v2_region(where: {name: {_eq: $region}}) {
-              name
-            }
-          }
-        `,
-        variables: { 
-          region: 'alola'
-        },
-        operationName: 'locationAlola'
-      } 
-    })
-    ```
     - **query**: graphql query schema
-    - **variables**: graphql query variables, optional
-    - **operationName**: graphql operation name, optional
+    - **variables**: graphql query variables `optional`
+    - **operationName**: graphql operation name `optional`
 
   - **transformer**
     - only transform key case in this request
@@ -616,6 +462,34 @@ const clearAllLocalStorage = () => {
     - **default**: by global `transformer`
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+- **response**
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding to the status code
+    - **type**: string
+  - **header**
+    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
+    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+    - Use `headers.get('your header key')` to get the header's value
+  - **data**
+    - The API response body in JSON format
+- **errors**
+  - If there is a request error, it will always return an `error` object
+  - **status**
+    - The status code of the response
+    - **type**: number
+  - **statusText**
+    - The status message corresponding
+  - **message**
+    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
+  - **errors**
+    - Returns [GraphQL errors](https://spec.graphql.org/October2021/#sec-Errors) or `[]`
+      - **message**   
+      - **locations**
+      - **path**
+      - **extensions**
 
 ### Usage
 ```js
@@ -673,35 +547,6 @@ const postPokemonLocation = async () => {
 }
 
 ```
-- **response**
-  - No need to use `response.json()`, as the fetcher maps response data into:
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding to the status code
-    - **type**: string
-  - **header**
-    - The [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object associated with the response.
-    - **type**: [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
-    - Use `headers.get('your header key')` to get the header's value
-  - **data**
-    - The API response body in JSON format
-- **errors**
-  - If there is a request error, it will always return an `error` object
-  - **status**
-    - The status code of the response
-    - **type**: number
-  - **statusText**
-    - The status message corresponding
-  - **message**
-    - If `response.message` can be parsed by `JSON.parse`, it will return the parsed object; otherwise, it returns a string
-  - **errors**
-    - Returns [GraphQL errors](https://spec.graphql.org/October2021/#sec-Errors) or `[]`
-      - **message**   
-      - **locations**
-      - **path**
-      - **extensions**
 ### Using with TypeScript
 ```ts
 import { createDataManager } from '@soie/data-manager'

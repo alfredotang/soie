@@ -3,13 +3,9 @@ import getTypeTag from '@soie/utils/get-type-tag'
 import keyTransformer from '@soie/utils/key-transformer'
 import validationFlow from '@soie/utils/validation-flow'
 
-import type {
-  Controller,
-  Endpoint,
-  KeyCaseTransformer,
-} from '@/data-manager/types'
+import type { Controller, Endpoint } from '@/data-manager/types'
 
-const endpointValidation = (endpoint: Endpoint<'GraphQL', never, never>) => {
+const endpointValidation = (endpoint: Endpoint<'GraphQL', never>) => {
   validationFlow(
     [endpoint.path, 'path is required'],
     [endpoint.params?.query, 'params.query is required'],
@@ -20,7 +16,7 @@ const endpointValidation = (endpoint: Endpoint<'GraphQL', never, never>) => {
   )
 }
 
-const createGraphQLExecutor =
+export const createGraphQL =
   (
     controller: Controller<'GraphQL'>,
     defaultTransformer?: {
@@ -28,7 +24,7 @@ const createGraphQLExecutor =
     }
   ) =>
   async <TResult>(
-    endpoint: Endpoint<'GraphQL', never, never>
+    endpoint: Endpoint<'GraphQL', never>
   ): Promise<FetcherResult<TResult>> => {
     endpointValidation(endpoint)
     const { transformResponseToCamelCase } = {
@@ -50,13 +46,3 @@ const createGraphQLExecutor =
       throw error
     }
   }
-
-const createGraphQL = ({
-  controller,
-  transformer,
-}: {
-  controller: Controller<'GraphQL'>
-  transformer?: KeyCaseTransformer
-}) => createGraphQLExecutor(controller, transformer)
-
-export default createGraphQL

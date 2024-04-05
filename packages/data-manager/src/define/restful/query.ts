@@ -8,13 +8,13 @@ import type {
   KeyCaseTransformer,
 } from '@/data-manager/types'
 
-const createRestfulQueryExecutor =
+const createRestfulQuery =
   (
     controller: Controller<'Restful'>,
     defaultTransformer?: KeyCaseTransformer
   ) =>
   async <TResult>(
-    endpoint: Endpoint<'Restful', 'Query', never>
+    endpoint: Endpoint<'Restful', 'Query'>
   ): Promise<FetcherResult<TResult>> => {
     const {
       transformRequestToSnakeCase,
@@ -51,4 +51,4 @@ const createRestfulQueryExecutor =
     }
   }
 
-export default createRestfulQueryExecutor
+export default createRestfulQuery

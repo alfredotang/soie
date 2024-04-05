@@ -7,13 +7,13 @@ import type {
   KeyCaseTransformer,
 } from '@/data-manager/types'
 
-const createRestfulMutationExecutor =
+const createRestfulMutation =
   (
     controller: Controller<'Restful'>,
     defaultTransformer?: KeyCaseTransformer
   ) =>
   async <TResult>(
-    endpoint: Endpoint<'Restful', 'Mutation', never>
+    endpoint: Endpoint<'Restful', 'Mutation'>
   ): Promise<FetcherResult<TResult>> => {
     const {
       transformRequestToSnakeCase,
@@ -51,4 +51,4 @@ const createRestfulMutationExecutor =
     }
   }
 
-export default createRestfulMutationExecutor
+export default createRestfulMutation
