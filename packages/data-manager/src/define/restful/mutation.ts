@@ -1,4 +1,5 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
+import getTypeTag from '@soie/utils/get-type-tag'
 import keyTransformer from '@soie/utils/key-transformer'
 import validationFlow from '@soie/utils/validation-flow'
 
@@ -25,7 +26,7 @@ const createRestfulMutation =
       ...endpoint.transformer,
     }
     const body =
-      endpoint.params instanceof FormData
+      getTypeTag(endpoint.params) === 'FormData'
         ? (endpoint.params as unknown as FormData)
         : JSON.stringify(
             keyTransformer(endpoint.params, {
