@@ -97,11 +97,7 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1(@swc/core@1.3.105)(typescript@5.3.3)
 
-  packages/utils:
-    dependencies:
-      change-case:
-        specifier: ^5.4.3
-        version: 5.4.3
+  packages/utils: {}
 
 packages:
 
@@ -3357,10 +3353,6 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
     dev: true
-
-  /change-case@5.4.3:
-    resolution: {integrity: sha512-4cdyvorTy/lViZlVzw2O8/hHCLUuHqp4KpSSP3DlauhFCf3LdnfF+p5s0EAhjKsU7bqrMzu7iQArYfoPiHO2nw==}
-    dev: false
 
   /check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}

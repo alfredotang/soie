@@ -1,5 +1,5 @@
+import { camelCase, snakeCase } from '@soie/utils/change-case'
 import getTypeTag from '@soie/utils/get-type-tag'
-import { camelCase as camelcase, snakeCase as snakecase } from 'change-case'
 
 type ChangeCase = 'camelcase' | 'snakecase'
 type StringOrRegExp = string | RegExp
@@ -58,6 +58,6 @@ export default function keyTransFormer<T>(input: T, options: Options) {
   return transform({
     input,
     excludes,
-    changer: changeCase === 'camelcase' ? camelcase : snakecase,
+    changer: changeCase === 'camelcase' ? camelCase : snakeCase,
   })
 }

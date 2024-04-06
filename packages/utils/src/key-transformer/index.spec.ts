@@ -77,11 +77,11 @@ describe('keyTransformer', () => {
             ).toEqual({
               helloWorld: 'no',
               hello: {
-                actionUrl_1: true,
+                actionUrl1: true,
               },
               names: [
-                { actionUrl_1: true, fullName: '1' },
-                { actionUrl_1: false, fullName: '2' },
+                { actionUrl1: true, fullName: '1' },
+                { actionUrl1: false, fullName: '2' },
               ],
               actionHeaders: headers,
             })
@@ -139,7 +139,7 @@ describe('keyTransformer', () => {
                 {
                   helloWorld: 'no',
                   hello: {
-                    actionUrl: '1',
+                    actionUrl1: '1',
                     locationList: [1, 2, 3],
                   },
                   names: [
@@ -156,7 +156,7 @@ describe('keyTransformer', () => {
             ).toEqual({
               hello_world: 'no',
               hello: {
-                action_url: '1',
+                action_url_1: '1',
                 location_list: [1, 2, 3],
               },
               names: [
