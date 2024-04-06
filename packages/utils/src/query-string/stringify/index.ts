@@ -1,6 +1,6 @@
 import type {
   Stringifiable,
-  StringifyInput,
+  StringifiableRecord,
   StringifyOptions,
 } from '@soie/utils/query-string/types'
 import validation from '@soie/utils/validation'
@@ -8,7 +8,7 @@ import validation from '@soie/utils/validation'
 import { arrayEncoderDict, encode } from './utils'
 
 export default function stringify(
-  object: StringifyInput | undefined,
+  object: StringifiableRecord | undefined,
   options?: StringifyOptions
 ) {
   const {

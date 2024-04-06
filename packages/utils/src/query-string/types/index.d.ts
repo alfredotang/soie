@@ -17,4 +17,7 @@ export type StringifyOptions = {
 export type Encodiable = string | number | boolean
 export type Stringifiable = Encodiable | null | undefined
 
-export type StringifyInput = Record<string, Stringifiable | Stringifiable[]>
+export type StringifiableRecord = Record<
+  string,
+  Stringifiable | Stringifiable[]
+>
