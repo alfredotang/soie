@@ -1,12 +1,8 @@
 import getTypeTag from '@soie/utils/get-type-tag'
+import type { TypeSafeAny } from '@soie/utils/types'
 import validationFlow from '@soie/utils/validation-flow'
 
-import type {
-  Controller,
-  StorageProtocol,
-  Stringifiable,
-  StringifiableRecord,
-} from '@/data-manager/types'
+import type { Controller, StorageProtocol } from '@/data-manager/types'
 import { buildStoragePath } from '@/data-manager/utils'
 
 export default class StorageExecutor {
@@ -43,7 +39,7 @@ export default class StorageExecutor {
     return result ? (JSON.parse(result) as TResult) : null
   }
 
-  public update(path: string, params: Stringifiable | StringifiableRecord) {
+  public update(path: string, params: TypeSafeAny) {
     validationFlow(
       [path, `path is required`],
       [

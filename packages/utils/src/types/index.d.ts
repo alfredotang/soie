@@ -1,10 +1,2 @@
-export type Stringifiable =
-  | string
-  | number
-  | bigint
-  | boolean
-  | Array<string | number | boolean | object | bigint>
-  | object
-  | null
-
-export type StringifiableRecord = Record<string, Stringifiable>
+export type TypeSafeAny = object | string | number | boolean
+export type TypeSafeAnyRecord = Record<string, TypeSafeAny>

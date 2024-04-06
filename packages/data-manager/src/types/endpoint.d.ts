@@ -1,16 +1,15 @@
-import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
+import type { TypeSafeAnyRecord } from '@soie/utils/types'
 
 import type { KeyCaseTransformer } from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
-export type { Stringifiable, StringifiableRecord }
 
 export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
 export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 export type Method = RestfulMethod | StorageMutationMethod
 export type GraphQLParams = {
   query: string
-  variables?: StringifiableRecord
+  variables?: TypeSafeAnyRecord
   operationName?: string
 }
 
@@ -41,7 +40,7 @@ export type RestfulEndpoint<E extends ExecuteType> = E extends 'Query'
 export type RestfulEndpoints = {
   query: {
     path: string
-    params?: QueryStringStringifiableRecord
+    params?: TypeSafeAnyRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
     arrayFormat?:
@@ -56,7 +55,7 @@ export type RestfulEndpoints = {
   mutation: {
     path: string
     method: RestfulMethod
-    params?: StringifiableRecord | FormData
+    params?: TypeSafeAnyRecord | FormData
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
   }

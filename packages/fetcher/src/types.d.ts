@@ -1,4 +1,4 @@
-import type { StringifiableRecord } from '@soie/utils/types'
+import type { TypeSafeAnyRecord } from '@soie/utils/types'
 
 type FetcherResponse = {
   status: number
@@ -17,14 +17,14 @@ export type FetcherResult<TResult> = FetcherResponse & {
 }
 
 export type FetcherError = FetcherResponse & {
-  message: string | StringifiableRecord
+  message: string | TypeSafeAnyRecord
 }
 
 export type GraphQLError = {
   message?: string
   locations?: Array<{ line: number; column: number }>
   path?: string[]
-  extensions?: StringifiableRecord
+  extensions?: TypeSafeAnyRecord
 }
 
 export type GraphQLFetcherError = FetcherError & {
