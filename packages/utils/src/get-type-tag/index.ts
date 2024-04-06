@@ -15,6 +15,11 @@ export type TypeTag =
   | 'Error'
   | 'Date'
   | 'Headers'
+  | 'BigInt'
+  | 'FormData'
+  | 'URLSearchParams'
+  | 'ArrayBuffer'
+  | 'Blob'
 
 export default function getTypeTag(value: unknown): TypeTag {
   if (typeof value === 'number' && isNaN(value)) return 'NaN'

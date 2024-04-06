@@ -15,6 +15,11 @@ const testCase: Array<[unknown, TypeTag]> = [
   [new Date(), 'Date'],
   [new Error('hello'), 'Error'],
   [new Headers(), 'Headers'],
+  [new FormData(), 'FormData'],
+  [new URLSearchParams(), 'URLSearchParams'],
+  [new ArrayBuffer(1), 'ArrayBuffer'],
+  [new Blob(), 'Blob'],
+  [BigInt(1), 'BigInt'],
 ]
 
 describe('getTypeTag', () => {
