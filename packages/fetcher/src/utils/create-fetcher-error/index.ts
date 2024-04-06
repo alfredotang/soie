@@ -1,6 +1,6 @@
 import {
   STATUS_CODE_DICT,
-  STATUS_DESCRIPTION_DICT,
+  STATUS_NAME_DICT,
 } from '@soie/utils/constants/http-status-code'
 import getPropertySafe from '@soie/utils/get-property-safe'
 
@@ -12,7 +12,7 @@ const createFetcherError = (error: unknown): FetcherError => {
     target: error,
     propertyName: 'status',
     type: 'Number',
-    defaultValue: STATUS_DESCRIPTION_DICT.INTERNAL_SERVER_ERROR,
+    defaultValue: STATUS_NAME_DICT.INTERNAL_SERVER_ERROR,
   })
 
   const statusText = getPropertySafe({

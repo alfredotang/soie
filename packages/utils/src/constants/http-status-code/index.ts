@@ -291,7 +291,7 @@ export const STATUS_CODE_DICT = HTTP_STATUS_DICT.reduce(
   {} as Record<HttpStatus['code'], HttpStatus['description']>
 )
 
-export const STATUS_DESCRIPTION_DICT = HTTP_STATUS_DICT.reduce(
+export const STATUS_NAME_DICT = HTTP_STATUS_DICT.reduce(
   (collection, { name, code }) => {
     collection[name] = code
     return collection
