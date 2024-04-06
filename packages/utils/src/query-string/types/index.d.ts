@@ -13,3 +13,8 @@ export type StringifyOptions = {
   skipNull?: boolean
   skipEmptyString?: boolean
 }
+
+export type Encodiable = string | number | boolean
+export type Stringifiable = Encodiable | null | undefined
+
+export type StringifyInput = Record<string, Stringifiable | Stringifiable[]>

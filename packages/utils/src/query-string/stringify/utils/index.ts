@@ -1,11 +1,12 @@
 import type {
   ArrayFormat,
+  Encodiable,
+  Stringifiable,
   StringifyOptions,
 } from '@soie/utils/query-string/types'
-import type { Stringifiable } from '@soie/utils/types'
 
-export const encode = (input: Stringifiable) =>
-  encodeURIComponent(input as string).replaceAll(
+export const encode = (input: Encodiable) =>
+  encodeURIComponent(input).replaceAll(
     /[!'()*]/g,
     x => `%${x.charCodeAt(0).toString(16).toUpperCase()}`
   )
@@ -41,7 +42,10 @@ export const arrayEncoderDict: Record<
           return [...collection, `${encode(key)}[${index}]`]
         }
 
-        return [...collection, `${encode(key)}[${index}]=${encode(value)}`]
+        return [
+          ...collection,
+          `${encode(key)}[${index}]=${encode(value as Encodiable)}`,
+        ]
       }
   },
   bracket({ skipEmptyString, skipNull }: StringifyOptions = {}) {
@@ -55,7 +59,10 @@ export const arrayEncoderDict: Record<
           return [...collection, `${encode(key)}[]`]
         }
 
-        return [...collection, `${encode(key)}[]=${encode(value)}`]
+        return [
+          ...collection,
+          `${encode(key)}[]=${encode(value as Encodiable)}`,
+        ]
       }
   },
   comma({ skipEmptyString, skipNull }: StringifyOptions = {}) {
@@ -64,7 +71,7 @@ export const arrayEncoderDict: Record<
         if (shouldSkip(value, { skipEmptyString, skipNull })) {
           return collection
         }
-        const _value = value === null ? '' : value
+        const _value = (value === null ? '' : value) as Encodiable
 
         if (!collection.length) {
           return [`${encode(key)}=${encode(_value)}`]
@@ -83,7 +90,7 @@ export const arrayEncoderDict: Record<
         if (shouldSkip(value, { skipEmptyString, skipNull })) {
           return collection
         }
-        const _value = value === null ? '' : value
+        const _value = (value === null ? '' : value) as Encodiable
 
         if (!collection.length) {
           return [`${encode(key)}=${encode(_value)}`]
@@ -102,7 +109,7 @@ export const arrayEncoderDict: Record<
         if (shouldSkip(value, { skipEmptyString, skipNull })) {
           return collection
         }
-        const _value = value === null ? '' : value
+        const _value = (value === null ? '' : value) as Encodiable
 
         if (!collection.length) {
           return [`${encode(key)}[]=${encode(_value)}`]
@@ -122,7 +129,10 @@ export const arrayEncoderDict: Record<
           return [...collection, `${encode(key)}:list=`]
         }
 
-        return [...collection, `${encode(key)}:list=${encode(value)}`]
+        return [
+          ...collection,
+          `${encode(key)}:list=${encode(value as Encodiable)}`,
+        ]
       }
   },
   none({ skipEmptyString, skipNull }: StringifyOptions = {}) {
@@ -136,7 +146,7 @@ export const arrayEncoderDict: Record<
           return [...collection, encode(key)]
         }
 
-        return [...collection, `${encode(key)}=${encode(value)}`]
+        return [...collection, `${encode(key)}=${encode(value as Encodiable)}`]
       }
   },
 }

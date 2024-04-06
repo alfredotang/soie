@@ -1,10 +1,12 @@
 import stringify from '@soie/utils/query-string/stringify'
-import type { StringifyOptions } from '@soie/utils/query-string/types'
-import type { StringifiableRecord } from '@soie/utils/types'
+import type {
+  StringifyInput,
+  StringifyOptions,
+} from '@soie/utils/query-string/types'
 
 type StringifyUrlParams = {
   url: string
-  query?: StringifiableRecord
+  query?: StringifyInput
 }
 
 export default function stringifyUrl(

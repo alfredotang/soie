@@ -1,11 +1,14 @@
-import type { StringifyOptions } from '@soie/utils/query-string/types'
-import type { Stringifiable, StringifiableRecord } from '@soie/utils/types'
+import type {
+  Stringifiable,
+  StringifyInput,
+  StringifyOptions,
+} from '@soie/utils/query-string/types'
 import validation from '@soie/utils/validation'
 
 import { arrayEncoderDict, encode } from './utils'
 
 export default function stringify(
-  object: Stringifiable | undefined,
+  object: StringifyInput | undefined,
   options?: StringifyOptions
 ) {
   const {
@@ -13,13 +16,7 @@ export default function stringify(
     arrayFormatSeparator = ',',
     skipEmptyString = false,
     skipNull = false,
-  } = {
-    arrayFormat: 'none' as StringifyOptions['arrayFormat'],
-    arrayFormatSeparator: ',',
-    skipNull: false,
-    skipEmptyString: false,
-    ...options,
-  }
+  } = options || {}
 
   validation(
     typeof arrayFormatSeparator === 'string' &&
@@ -30,21 +27,12 @@ export default function stringify(
     return ''
   }
 
-  const shouldFilter = (key: keyof typeof object) =>
-    (skipNull && object[key] == null) || (skipEmptyString && object[key] === '')
+  const shouldFilter = (value: Stringifiable | Stringifiable[]) =>
+    (skipNull && value == null) || (skipEmptyString && value === '')
 
-  const objectCopy: StringifiableRecord = {}
-
-  Object.entries(object).forEach(([key, value]) => {
-    if (!shouldFilter(key as keyof typeof object)) {
-      objectCopy[key] = value
-    }
-  })
-
-  return Object.keys(objectCopy)
-    .map(key => {
-      const value = objectCopy[key]
-
+  return Object.entries(object)
+    .filter(([, value]) => !shouldFilter(value))
+    .map(([key, value]) => {
       if (value === undefined) return ''
 
       if (value === null) return encode(key)

@@ -9,7 +9,8 @@
     "soie",
     "Stringifiable",
     "treeshake",
-    "tsup"
+    "tsup",
+    "Encodiable"
   ],
   "eslint.validate": ["json"]
 }
