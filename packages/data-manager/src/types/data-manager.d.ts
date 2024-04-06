@@ -6,7 +6,7 @@ import type {
   FetcherResult,
 } from '@soie/fetcher'
 
-export { FetcherError, FetcherResult }
+export { FetcherError, FetcherResult, TypeSafeAny, TypeSafeAnyRecord }
 
 export type DataManagerConfig = {
   requestConfig?: FetcherRequestConfig

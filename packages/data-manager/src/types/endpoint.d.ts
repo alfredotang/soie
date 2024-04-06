@@ -1,6 +1,9 @@
-import type { TypeSafeAnyRecord } from '@soie/utils/types'
-
-import type { KeyCaseTransformer } from './data-manager'
+import type {
+  KeyCaseTransformer,
+  Protocol,
+  TypeSafeAny,
+  TypeSafeAnyRecord,
+} from './data-manager'
 
 export type ExecuteType = 'Query' | 'Mutation'
 
@@ -55,7 +58,7 @@ export type RestfulEndpoints = {
   mutation: {
     path: string
     method: RestfulMethod
-    params?: TypeSafeAnyRecord | FormData
+    params?: TypeSafeAny | FormData
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
   }

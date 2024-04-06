@@ -1,8 +1,11 @@
 import getTypeTag from '@soie/utils/get-type-tag'
-import type { TypeSafeAny } from '@soie/utils/types'
 import validationFlow from '@soie/utils/validation-flow'
 
-import type { Controller, StorageProtocol } from '@/data-manager/types'
+import type {
+  Controller,
+  StorageProtocol,
+  TypeSafeAny,
+} from '@/data-manager/types'
 import { buildStoragePath } from '@/data-manager/utils'
 
 export default class StorageExecutor {
