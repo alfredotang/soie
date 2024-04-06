@@ -1,5 +1,6 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
 import keyTransformer from '@soie/utils/key-transformer'
+import validationFlow from '@soie/utils/validation-flow'
 import querystring from 'query-string'
 
 import type {
@@ -16,6 +17,7 @@ const createRestfulQuery =
   async <TResult>(
     endpoint: Endpoint<'Restful', 'Query'>
   ): Promise<FetcherResult<TResult>> => {
+    validationFlow([endpoint.path, 'path is required'])
     const {
       transformRequestToSnakeCase,
       transformResponseToCamelCase,

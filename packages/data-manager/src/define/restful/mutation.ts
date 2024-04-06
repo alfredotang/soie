@@ -1,5 +1,6 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
 import keyTransformer from '@soie/utils/key-transformer'
+import validationFlow from '@soie/utils/validation-flow'
 
 import type {
   Controller,
@@ -15,6 +16,7 @@ const createRestfulMutation =
   async <TResult>(
     endpoint: Endpoint<'Restful', 'Mutation'>
   ): Promise<FetcherResult<TResult>> => {
+    validationFlow([endpoint.path, 'path is required'])
     const {
       transformRequestToSnakeCase,
       transformResponseToCamelCase,
