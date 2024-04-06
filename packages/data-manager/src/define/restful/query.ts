@@ -1,7 +1,7 @@
 import type { FetcherError, FetcherResult } from '@soie/fetcher'
 import keyTransformer from '@soie/utils/key-transformer'
+import { stringifyUrl } from '@soie/utils/query-string'
 import validationFlow from '@soie/utils/validation-flow'
-import querystring from 'query-string'
 
 import type {
   Controller,
@@ -25,7 +25,7 @@ const createRestfulQuery =
       ...defaultTransformer,
       ...endpoint.transformer,
     }
-    const url = querystring.stringifyUrl(
+    const url = stringifyUrl(
       {
         url: endpoint.path,
         query: keyTransformer(endpoint.params, {

@@ -1,6 +1,7 @@
 import type {
   KeyCaseTransformer,
   Protocol,
+  StringifiableRecord,
   TypeSafeAny,
   TypeSafeAnyRecord,
 } from './data-manager'
@@ -43,7 +44,7 @@ export type RestfulEndpoint<E extends ExecuteType> = E extends 'Query'
 export type RestfulEndpoints = {
   query: {
     path: string
-    params?: TypeSafeAnyRecord
+    params?: StringifiableRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
     transformer?: KeyCaseTransformer
     arrayFormat?:

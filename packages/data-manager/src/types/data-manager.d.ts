@@ -5,8 +5,16 @@ import type {
   FetcherRequestConfig,
   FetcherResult,
 } from '@soie/fetcher'
+import type { StringifiableRecord } from '@soie/utils/query-string'
+import type { TypeSafeAny, TypeSafeAnyRecord } from '@soie/utils/types'
 
-export { FetcherError, FetcherResult, TypeSafeAny, TypeSafeAnyRecord }
+export {
+  FetcherError,
+  FetcherResult,
+  StringifiableRecord,
+  TypeSafeAny,
+  TypeSafeAnyRecord,
+}
 
 export type DataManagerConfig = {
   requestConfig?: FetcherRequestConfig

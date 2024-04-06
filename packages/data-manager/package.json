@@ -27,9 +27,6 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {
-    "query-string": "^8.1.0"
-  },
   "types": "./index.d.ts",
   "main": "./index.js",
   "module": "./index.mjs",
