@@ -1,3 +1,3 @@
 export * from './gql'
 export * from './restful'
-export { default as StorageExecutor } from './storage'
+export { default as createStorage } from './storage'

@@ -12,7 +12,10 @@ const server = setupServer(
   afuql.query('Hello', ({ variables }) => {
     return HttpResponse.json({
       data: {
-        full_name: variables.name,
+        name: {
+          full_name: variables.name,
+          nick_name: 'yes',
+        },
       },
     })
   }),
@@ -24,7 +27,10 @@ const server = setupServer(
   afuql.mutation('Hello', ({ variables }) => {
     return HttpResponse.json({
       data: {
-        full_name: variables.name,
+        name: {
+          full_name: variables.name,
+          nick_name: 'yes',
+        },
       },
     })
   }),
@@ -64,29 +70,65 @@ describe('dataManager graphql', () => {
             })
 
             expect(data).toEqual({
-              full_name: 'alfredo',
+              name: {
+                full_name: 'alfredo',
+                nick_name: 'yes',
+              },
             })
           })
-          it('true', async () => {
-            const { data } = await d.gql<object>({
-              path: '/graphql',
-              params: {
-                query: gql`
-                  query Hello {
-                    full_name
-                  }
-                `,
-                variables: {
-                  name: 'alfredo',
-                },
-              },
-              transformer: {
-                transformResponseToCamelCase: true,
-              },
-            })
+          describe('true', () => {
+            describe('with transform excludes', () => {
+              it('true', async () => {
+                const { data } = await d.gql<object>({
+                  path: '/graphql',
+                  params: {
+                    query: gql`
+                      query Hello {
+                        full_name
+                      }
+                    `,
+                    variables: {
+                      name: 'alfredo',
+                    },
+                  },
+                  transformer: {
+                    transformResponseToCamelCase: true,
+                    transformResponseExcludes: ['nick_name'],
+                  },
+                })
 
-            expect(data).toEqual({
-              fullName: 'alfredo',
+                expect(data).toEqual({
+                  name: {
+                    fullName: 'alfredo',
+                    nick_name: 'yes',
+                  },
+                })
+              })
+              it('false', async () => {
+                const { data } = await d.gql<object>({
+                  path: '/graphql',
+                  params: {
+                    query: gql`
+                      query Hello {
+                        full_name
+                      }
+                    `,
+                    variables: {
+                      name: 'alfredo',
+                    },
+                  },
+                  transformer: {
+                    transformResponseToCamelCase: true,
+                  },
+                })
+
+                expect(data).toEqual({
+                  name: {
+                    fullName: 'alfredo',
+                    nickName: 'yes',
+                  },
+                })
+              })
             })
           })
         })
@@ -129,29 +171,63 @@ describe('dataManager graphql', () => {
             })
 
             expect(data).toEqual({
-              full_name: 'Jacky',
+              name: {
+                full_name: 'Jacky',
+                nick_name: 'yes',
+              },
             })
           })
-          it('true', async () => {
-            const { data } = await d.gql<object>({
-              path: '/graphql',
-              params: {
-                query: gql`
-                  mutation Hello {
-                    full_name
-                  }
-                `,
-                variables: {
-                  name: 'Jacky',
+          describe('with transform excludes', () => {
+            it('true', async () => {
+              const { data } = await d.gql<object>({
+                path: '/graphql',
+                params: {
+                  query: gql`
+                    mutation Hello {
+                      full_name
+                    }
+                  `,
+                  variables: {
+                    name: 'Jacky',
+                  },
                 },
-              },
-              transformer: {
-                transformResponseToCamelCase: true,
-              },
-            })
+                transformer: {
+                  transformResponseToCamelCase: true,
+                  transformResponseExcludes: ['nick_name'],
+                },
+              })
 
-            expect(data).toEqual({
-              fullName: 'Jacky',
+              expect(data).toEqual({
+                name: {
+                  fullName: 'Jacky',
+                  nick_name: 'yes',
+                },
+              })
+            })
+            it('false', async () => {
+              const { data } = await d.gql<object>({
+                path: '/graphql',
+                params: {
+                  query: gql`
+                    mutation Hello {
+                      full_name
+                    }
+                  `,
+                  variables: {
+                    name: 'Jacky',
+                  },
+                },
+                transformer: {
+                  transformResponseToCamelCase: true,
+                },
+              })
+
+              expect(data).toEqual({
+                name: {
+                  fullName: 'Jacky',
+                  nickName: 'yes',
+                },
+              })
             })
           })
         })

@@ -6,6 +6,7 @@ import validationFlow from '@soie/utils/validation-flow'
 import type {
   Controller,
   Endpoint,
+  EndpointTransformer,
   KeyCaseTransformer,
 } from '@/data-manager/types'
 
@@ -21,7 +22,9 @@ const createRestfulMutation =
     const {
       transformRequestToSnakeCase,
       transformResponseToCamelCase,
-    }: KeyCaseTransformer = {
+      transformRequestExcludes,
+      transformResponseExcludes,
+    }: EndpointTransformer = {
       ...defaultTransformer,
       ...endpoint.transformer,
     }
@@ -32,6 +35,7 @@ const createRestfulMutation =
             keyTransformer(endpoint.params, {
               changeCase: 'snakecase',
               enabled: transformRequestToSnakeCase,
+              excludes: transformRequestExcludes,
             })
           )
 
@@ -45,11 +49,13 @@ const createRestfulMutation =
       return keyTransformer(response, {
         enabled: transformResponseToCamelCase,
         changeCase: 'camelcase',
+        excludes: transformResponseExcludes,
       }) as FetcherResult<TResult>
     } catch (error) {
       throw keyTransformer(error as FetcherError, {
         enabled: transformResponseToCamelCase,
         changeCase: 'camelcase',
+        excludes: transformResponseExcludes,
       })
     }
   }

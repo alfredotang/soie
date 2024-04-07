@@ -94,14 +94,96 @@ pnpm add @soie/data-manager
     // it will be generated to 'https://some-api?limit=10&offset=0'
     ```
   - **arrayFormat**
-    - [array format](https://www.npmjs.com/package/query-string#arrayformat-1)
+    - Serialize params arrays
     - **type**: `'bracket' | 'index' | 'comma' | 'separator' | 'bracket-separator' | 'colon-list-separator' | 'none'`
-    - **default**: `'none'`
+      -  `bracket`
+         ```js   
+          dataManager.query({ 
+            path: 'https//example.com', 
+            params: { foo: [1, 2, 3] },
+            arrayFormat: 'bracket',
+          })
+          // https//example.com?foo[]=1&foo[]=2&foo[]=3
+          ```
+      - `index`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'index',
+        })
+        // https//example.com?foo[0]=1&foo[1]=2&foo[2]=3
+        ``` 
+      - `comma`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'comma',
+        })
+        // https//example.com?foo=1,2,3
+        ``` 
+      - `separator`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'separator',
+          arrayFormatSeparator: '|'
+        })
+        // https//example.com?foo=1|2|3
+        ``` 
+      - `bracket-separator`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'bracket-separator',
+          arrayFormatSeparator: '|'
+        })
+        // https//example.com?foo[]=1|2|3
+        ``` 
+      - `colon-list-separator`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'colon-list-separator',
+        })
+        // https//example.com?foo:list=1&foo:list=2&foo:list=3
+        ``` 
+      - `none`
+        ```js   
+        dataManager.query({ 
+          path: 'https//example.com', 
+          params: { foo: [1, 2, 3] },
+          arrayFormat: 'colon-list-separator',
+        })
+        // https//example.com?foo=1&foo=2&foo=3
+        ``` 
+    - **default**: `'none'`   
+  - **arrayFormatSeparator**
+    - The character used to separate array elements when using `arrayFormat: 'separator' | 'bracket-separator'`
+    - **type**: `string`
+    - **default**: `','`
   - **transformer**
     - only transform key case in this request
-      - **transformRequestToSnakeCase**: transform your request body or query string key into snake case
-      - **transformResponseToCamelCase**: transform your response body's key into camel case
-    - **default**: by global `transformer`
+      - **transformRequestToSnakeCase**
+        - transform your request body or query string key into snake case
+        - **type**: `boolean`
+        - **default**: Global `transformer.transformRequestToSnakeCase` 
+      - **transformResponseToCamelCase** 
+        - transform your response body's key into camel case
+        - **type**: `boolean`
+        - **default**: Global `transformer.transformResponseToCamelCase` 
+      - **transformRequestExcludes**
+        - Exclude keys from being snake-cased. 
+        - **type**: `Array<string | RegExp>`
+        - **default**: `[]`
+      - **transformResponseExcludes**
+        - Exclude keys from being camel-cased.
+        - **type**: `Array<string | RegExp>`
+        - **default**: `[]` 
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
 - **response**
@@ -206,10 +288,23 @@ const getPokemonList = async (): Promise<PokemonList> => {
     - Request method
     - **type**: `'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'`
   - **transformer**
-    - Only transforms key case in this request
-      - **transformRequestToSnakeCase**: Transforms your request body or query string key into snake case
-      - **transformResponseToCamelCase**: Transforms your response body's key into camel case
-    - **default**: Global `transformer`
+    - only transform key case in this request
+      - **transformRequestToSnakeCase**
+        - transform your request body or query string key into snake case
+        - **type**: `boolean`
+        - **default**: Global `transformer.transformRequestToSnakeCase`
+      - **transformResponseToCamelCase** 
+        - transform your response body's key into camel case
+        - **type**: `boolean`
+        - **default**: Global `transformer.transformResponseToCamelCase`
+      - **transformRequestExcludes**
+        - Exclude keys from being snake-cased. 
+        - **type**: `Array<string | RegExp>`
+        - **default**: `[]`
+      - **transformResponseExcludes**
+        - Exclude keys from being camel-cased.
+        - **type**: `Array<string | RegExp>`
+        - **default**: `[]` 
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
 - **response**
@@ -454,12 +549,16 @@ const clearAllSessionStorage = () => {
     - **query**: graphql query schema
     - **variables**: graphql query variables `optional`
     - **operationName**: graphql operation name `optional`
-
   - **transformer**
     - only transform key case in this request
-      - **transformResponseToCamelCase**: transform your response body's key into camel case
-    - `transformRequestToSnakeCase` is not provided because that will impact graphql query
-    - **default**: by global `transformer`
+      - **transformResponseToCamelCase** 
+        - transform your response body's key into camel case
+        - **type**: `boolean`
+        - **default**: Global `transformer.transformResponseToCamelCase` 
+      - **transformResponseExcludes**
+        - Exclude keys from being camel-cased.
+        - **type**: `Array<string | RegExp>`
+        - **default**: `[]` 
   - **requestInit**
     - [RequestInit MDN](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
 - **response**

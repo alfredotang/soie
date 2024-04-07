@@ -6,17 +6,6 @@ import type {
   TypeSafeAnyRecord,
 } from './data-manager'
 
-export type ExecuteType = 'Query' | 'Mutation'
-
-export type StorageMutationMethod = 'DELETE' | 'UPDATE' | 'CLEAR'
-export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
-export type Method = RestfulMethod | StorageMutationMethod
-export type GraphQLParams = {
-  query: string
-  variables?: TypeSafeAnyRecord
-  operationName?: string
-}
-
 export type Endpoint<
   P extends Protocol,
   E extends ExecuteType,
@@ -26,13 +15,31 @@ export type Endpoint<
     ? RestfulEndpoint<E>
     : never
 
+export type ExecuteType = 'Query' | 'Mutation'
+export type RestfulMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+export type Method = RestfulMethod
+
+export type StringOrRegExp = string | RegExp
+
+export type KeyCaseTransformExclude = {
+  transformRequestExcludes?: StringOrRegExp[]
+  transformResponseExcludes?: StringOrRegExp[]
+}
+
+export type EndpointTransformer = KeyCaseTransformer & KeyCaseTransformExclude
+
 export type GraphQLEndpoint = {
   path: string
-  params: GraphQLParams
-  requestInit?: Omit<RequestInit, 'method' | 'body'>
-  transformer?: {
-    transformResponseToCamelCase?: boolean
+  params: {
+    query: string
+    variables?: TypeSafeAnyRecord
+    operationName?: string
   }
+  requestInit?: Omit<RequestInit, 'method' | 'body'>
+  transformer?: Pick<
+    EndpointTransformer,
+    'transformResponseToCamelCase' | 'transformResponseExcludes'
+  >
 }
 
 export type RestfulEndpoint<E extends ExecuteType> = E extends 'Query'
@@ -46,7 +53,7 @@ export type RestfulEndpoints = {
     path: string
     params?: StringifiableRecord
     requestInit?: Omit<RequestInit, 'method' | 'body'>
-    transformer?: KeyCaseTransformer
+    transformer?: EndpointTransformer
     arrayFormat?:
       | 'bracket'
       | 'index'
@@ -55,12 +62,13 @@ export type RestfulEndpoints = {
       | 'bracket-separator'
       | 'colon-list-separator'
       | 'none'
+    arrayFormatSeparator?: string
   }
   mutation: {
     path: string
     method: RestfulMethod
     params?: TypeSafeAny | FormData
     requestInit?: Omit<RequestInit, 'method' | 'body'>
-    transformer?: KeyCaseTransformer
+    transformer?: EndpointTransformer
   }
 }

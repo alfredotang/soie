@@ -6,6 +6,7 @@ import validationFlow from '@soie/utils/validation-flow'
 import type {
   Controller,
   Endpoint,
+  EndpointTransformer,
   KeyCaseTransformer,
 } from '@/data-manager/types'
 
@@ -21,7 +22,9 @@ const createRestfulQuery =
     const {
       transformRequestToSnakeCase,
       transformResponseToCamelCase,
-    }: KeyCaseTransformer = {
+      transformRequestExcludes,
+      transformResponseExcludes,
+    }: EndpointTransformer = {
       ...defaultTransformer,
       ...endpoint.transformer,
     }
@@ -31,10 +34,12 @@ const createRestfulQuery =
         query: keyTransformer(endpoint.params, {
           enabled: transformRequestToSnakeCase,
           changeCase: 'snakecase',
+          excludes: transformRequestExcludes,
         }),
       },
       {
         arrayFormat: endpoint.arrayFormat,
+        arrayFormatSeparator: endpoint.arrayFormatSeparator,
       }
     )
 
@@ -44,11 +49,13 @@ const createRestfulQuery =
       return keyTransformer(response, {
         enabled: transformResponseToCamelCase,
         changeCase: 'camelcase',
+        excludes: transformResponseExcludes,
       }) as FetcherResult<TResult>
     } catch (error) {
       throw keyTransformer(error as FetcherError, {
         enabled: transformResponseToCamelCase,
         changeCase: 'camelcase',
+        excludes: transformResponseExcludes,
       })
     }
   }

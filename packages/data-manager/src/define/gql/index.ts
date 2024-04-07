@@ -27,7 +27,7 @@ export const createGraphQL =
     endpoint: Endpoint<'GraphQL', never>
   ): Promise<FetcherResult<TResult>> => {
     endpointValidation(endpoint)
-    const { transformResponseToCamelCase } = {
+    const { transformResponseToCamelCase, transformResponseExcludes } = {
       ...defaultTransformer,
       ...endpoint.transformer,
     }
@@ -40,6 +40,7 @@ export const createGraphQL =
       return keyTransformer(response, {
         enabled: transformResponseToCamelCase,
         changeCase: 'camelcase',
+        excludes: transformResponseExcludes,
       }) as FetcherResult<TResult>
     } catch (_error) {
       const error = _error as GraphQLFetcherError
