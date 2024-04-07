@@ -10,12 +10,12 @@ import { DataManagerConfig, KeyCaseTransformer } from './types'
 export const createDataManager = ({
   requestConfig,
   storagePrefix = 'data-manager',
-  transformer: _transformer,
+  transformer,
 }: DataManagerConfig = {}) => {
   const defaultTransformer: KeyCaseTransformer = {
     transformRequestToSnakeCase: false,
     transformResponseToCamelCase: false,
-    ..._transformer,
+    ...transformer,
   }
 
   const {
