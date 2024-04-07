@@ -4,13 +4,13 @@ import {
   type FetcherRequestConfig,
 } from '@soie/fetcher'
 
-import createStorageInstance from './storage'
+import storageInstances from './storage'
 
 const createInstances = (requestConfig?: FetcherRequestConfig) => {
   return {
     restfulController: createFetcher(requestConfig),
-    localStorageController: createStorageInstance('LocalStorage'),
-    sessionStorageController: createStorageInstance('SessionStorage'),
+    localStorageController: storageInstances.LocalStorage,
+    sessionStorageController: storageInstances.SessionStorage,
     graphQLController: createGraphQLFetcher(requestConfig),
   }
 }

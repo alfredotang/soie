@@ -2,7 +2,7 @@ import {
   createGraphQL,
   createRestfulMutation,
   createRestfulQuery,
-  StorageExecutor,
+  createStorage,
 } from './define'
 import createInstances from './instances'
 import { DataManagerConfig, KeyCaseTransformer } from './types'
@@ -29,12 +29,8 @@ export const createDataManager = ({
     query: createRestfulQuery(restfulController, defaultTransformer),
     mutation: createRestfulMutation(restfulController, defaultTransformer),
     gql: createGraphQL(graphQLController, defaultTransformer),
-    ls: new StorageExecutor(
-      storagePrefix,
-      localStorageController,
-      'LocalStorage'
-    ),
-    ss: new StorageExecutor(
+    ls: createStorage(storagePrefix, localStorageController, 'LocalStorage'),
+    ss: createStorage(
       storagePrefix,
       sessionStorageController,
       'SessionStorage'

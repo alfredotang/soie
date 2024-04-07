@@ -1,14 +1,10 @@
 import { MOCK_STORAGE } from '@/data-manager/constants/storage'
-import type { StorageProtocol } from '@/data-manager/types'
 
-const createStorageInstance = (protocol: StorageProtocol) => {
-  if (typeof window === 'undefined') return MOCK_STORAGE
-  const StorageMap = {
-    LocalStorage: localStorage,
-    SessionStorage: sessionStorage,
-  }
-  const storage = StorageMap[protocol]
-  return storage
+const isServer = typeof window === 'undefined'
+
+const storageInstances = {
+  LocalStorage: isServer ? MOCK_STORAGE : localStorage,
+  SessionStorage: isServer ? MOCK_STORAGE : sessionStorage,
 }
 
-export default createStorageInstance
+export default storageInstances
