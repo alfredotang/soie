@@ -50,7 +50,7 @@
     "includedScripts": []
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json,md,css,scss,html,yml,yaml}": [
+    "packages/**/*.{js,ts,tsx,json,md,css,scss,html,yml,yaml}": [
       "eslint --fix"
     ]
   }
