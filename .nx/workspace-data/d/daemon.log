@@ -1,0 +1,12 @@
+[NX Daemon Server] - 2025-01-26T05:48:16.506Z - Started listening on: /var/folders/sw/gppngs9n0b73513cz43q2dlm0000gn/T/1fa3ff490aa95401c222/d.sock
+[NX Daemon Server] - 2025-01-26T05:48:16.508Z - [WATCHER]: Subscribed to changes within: /Users/alfredotang/Documents/projects/soie (native)
+[NX Daemon Server] - 2025-01-26T05:48:16.515Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-01-26T05:48:16.515Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-01-26T05:48:16.516Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-01-26T05:48:16.517Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-01-26T05:48:16.517Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-01-26T05:48:16.517Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 0.
+[NX Daemon Server] - 2025-01-26T05:48:16.518Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-01-26T05:48:16.518Z - [WATCHER]: Stopping the watcher for /Users/alfredotang/Documents/projects/soie (sources)
+[NX Daemon Server] - 2025-01-26T05:48:16.518Z - [WATCHER]: Stopping the watcher for /Users/alfredotang/Documents/projects/soie (outputs)
+[NX Daemon Server] - 2025-01-26T05:48:16.518Z - Server stopped because: "Request to shutdown"

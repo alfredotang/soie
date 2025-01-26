@@ -1,3 +1,8 @@
-.eslintrc.js 
-dist 
+.eslintrc.js
+dist
 **/dist
+.nx
+coverage
+node_modules
+.verdaccio
+.husky

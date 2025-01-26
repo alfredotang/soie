@@ -1,0 +1,656 @@
+{
+  "version": "6.0",
+  "nxVersion": "20.3.3",
+  "pathMappings": {
+    "@/data-manager/*": [
+      "packages/data-manager/src/*"
+    ],
+    "@/fetcher/*": [
+      "packages/fetcher/src/*"
+    ],
+    "@soie/data-manager": [
+      "packages/data-manager/src/index.ts"
+    ],
+    "@soie/fetcher": [
+      "packages/fetcher/src/index.ts"
+    ],
+    "@soie/plugin": [
+      "packages/plugin/src/index.ts"
+    ],
+    "@soie/utils/*": [
+      "packages/utils/src/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": true
+    }
+  },
+  "fileMap": {
+    "projectFileMap": {
+      "@soie/data-manager": [
+        {
+          "file": "packages/data-manager/.eslintrc.json",
+          "hash": "1047236976273008866"
+        },
+        {
+          "file": "packages/data-manager/README.md",
+          "hash": "18291778540288443602"
+        },
+        {
+          "file": "packages/data-manager/package.json",
+          "hash": "14840267121888503622"
+        },
+        {
+          "file": "packages/data-manager/project.json",
+          "hash": "5786206707881107432"
+        },
+        {
+          "file": "packages/data-manager/src/constants/storage.ts",
+          "hash": "4524731728214700063"
+        },
+        {
+          "file": "packages/data-manager/src/data-manager.ts",
+          "hash": "5137946889926993444"
+        },
+        {
+          "file": "packages/data-manager/src/define/gql/index.ts",
+          "hash": "16407999279931987835",
+          "deps": [
+            "@soie/fetcher",
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/define/index.ts",
+          "hash": "13397105431635630154"
+        },
+        {
+          "file": "packages/data-manager/src/define/restful/index.ts",
+          "hash": "14470683445252060863"
+        },
+        {
+          "file": "packages/data-manager/src/define/restful/mutation.ts",
+          "hash": "6176236384441667217",
+          "deps": [
+            "@soie/fetcher",
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/define/restful/query.ts",
+          "hash": "16973204746987714353",
+          "deps": [
+            "@soie/fetcher",
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/define/storage/index.ts",
+          "hash": "12987507965153609427",
+          "deps": [
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/index.ts",
+          "hash": "1539787353069350555"
+        },
+        {
+          "file": "packages/data-manager/src/instances/index.ts",
+          "hash": "7186307556040085283",
+          "deps": [
+            "@soie/fetcher"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/instances/storage.ts",
+          "hash": "13386842210749317605"
+        },
+        {
+          "file": "packages/data-manager/src/test/gql.spec.ts",
+          "hash": "4069656127888304910",
+          "deps": [
+            "@soie/utils",
+            "npm:msw"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/test/restful/mutation.spec.ts",
+          "hash": "17403945506947441073",
+          "deps": [
+            "@soie/utils",
+            "npm:msw"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/test/restful/query.spec.ts",
+          "hash": "2296783183505512672",
+          "deps": [
+            "@soie/utils",
+            "npm:msw"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/test/storage.spec.ts",
+          "hash": "8121549538265643637"
+        },
+        {
+          "file": "packages/data-manager/src/types/data-manager.d.ts",
+          "hash": "2391025724353767406",
+          "deps": [
+            "@soie/fetcher",
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/data-manager/src/types/endpoint.d.ts",
+          "hash": "2295081210858044337"
+        },
+        {
+          "file": "packages/data-manager/src/types/index.d.ts",
+          "hash": "16450583330758515456"
+        },
+        {
+          "file": "packages/data-manager/src/utils/build-storage-path/index.ts",
+          "hash": "899698528137382474"
+        },
+        {
+          "file": "packages/data-manager/src/utils/index.ts",
+          "hash": "9034991454629125361"
+        },
+        {
+          "file": "packages/data-manager/src/utils/is-own-storage-path/index.ts",
+          "hash": "5702934861530279567"
+        },
+        {
+          "file": "packages/data-manager/tsconfig.json",
+          "hash": "12404882146747062383"
+        },
+        {
+          "file": "packages/data-manager/tsconfig.lib.json",
+          "hash": "2846821943550006950"
+        },
+        {
+          "file": "packages/data-manager/tsconfig.spec.json",
+          "hash": "1293933575352661305"
+        },
+        {
+          "file": "packages/data-manager/vite.config.ts",
+          "hash": "11985357183393508291",
+          "deps": [
+            "npm:@nx/vite",
+            "npm:vite"
+          ]
+        }
+      ],
+      "@soie/utils": [
+        {
+          "file": "packages/utils/.eslintrc.json",
+          "hash": "13948411440134303961"
+        },
+        {
+          "file": "packages/utils/README.md",
+          "hash": "18238730301534628748"
+        },
+        {
+          "file": "packages/utils/package.json",
+          "hash": "14236209545655359861"
+        },
+        {
+          "file": "packages/utils/project.json",
+          "hash": "14350024078527236821"
+        },
+        {
+          "file": "packages/utils/src/cache/index.ts",
+          "hash": "13250222650047594997"
+        },
+        {
+          "file": "packages/utils/src/change-case/camel-case/index.spec.ts",
+          "hash": "10673021602452224081"
+        },
+        {
+          "file": "packages/utils/src/change-case/camel-case/index.ts",
+          "hash": "16909771866965015680"
+        },
+        {
+          "file": "packages/utils/src/change-case/index.ts",
+          "hash": "7422288745824868938"
+        },
+        {
+          "file": "packages/utils/src/change-case/no-case/index.spec.ts",
+          "hash": "4396071028408140842"
+        },
+        {
+          "file": "packages/utils/src/change-case/no-case/index.ts",
+          "hash": "17241338620670467195"
+        },
+        {
+          "file": "packages/utils/src/change-case/snake-case/index.spec.ts",
+          "hash": "4089586191653516867"
+        },
+        {
+          "file": "packages/utils/src/change-case/snake-case/index.ts",
+          "hash": "9432617315800587878"
+        },
+        {
+          "file": "packages/utils/src/change-case/split/constants/index.ts",
+          "hash": "15674052283214940694"
+        },
+        {
+          "file": "packages/utils/src/change-case/split/index.spec.ts",
+          "hash": "8116692139234782049"
+        },
+        {
+          "file": "packages/utils/src/change-case/split/index.ts",
+          "hash": "9799626358271464376"
+        },
+        {
+          "file": "packages/utils/src/constants/http-status-code/index.ts",
+          "hash": "17035416422179554473"
+        },
+        {
+          "file": "packages/utils/src/get-int-safe/index.spec.ts",
+          "hash": "6853791297604343021"
+        },
+        {
+          "file": "packages/utils/src/get-int-safe/index.ts",
+          "hash": "10151444850749283612"
+        },
+        {
+          "file": "packages/utils/src/get-number-safe/index.spec.ts",
+          "hash": "831241472668103758"
+        },
+        {
+          "file": "packages/utils/src/get-number-safe/index.ts",
+          "hash": "3604278151301523692"
+        },
+        {
+          "file": "packages/utils/src/get-property-safe/index.spec.ts",
+          "hash": "17596331991041095164"
+        },
+        {
+          "file": "packages/utils/src/get-property-safe/index.ts",
+          "hash": "16831533234882251382"
+        },
+        {
+          "file": "packages/utils/src/get-type-tag/index.spec.ts",
+          "hash": "12535172253108480349"
+        },
+        {
+          "file": "packages/utils/src/get-type-tag/index.ts",
+          "hash": "13075337522876068411"
+        },
+        {
+          "file": "packages/utils/src/key-transformer/index.spec.ts",
+          "hash": "7708338058805451112"
+        },
+        {
+          "file": "packages/utils/src/key-transformer/index.ts",
+          "hash": "17483060107262588024"
+        },
+        {
+          "file": "packages/utils/src/query-string/index.ts",
+          "hash": "17267515184643421219"
+        },
+        {
+          "file": "packages/utils/src/query-string/stringify-url/index.spec.ts",
+          "hash": "16367713257755518789"
+        },
+        {
+          "file": "packages/utils/src/query-string/stringify-url/index.ts",
+          "hash": "5537814183632667854"
+        },
+        {
+          "file": "packages/utils/src/query-string/stringify/index.spec.ts",
+          "hash": "972888767180433399"
+        },
+        {
+          "file": "packages/utils/src/query-string/stringify/index.ts",
+          "hash": "12386686189226314743"
+        },
+        {
+          "file": "packages/utils/src/query-string/stringify/utils/index.ts",
+          "hash": "12012295390418091423"
+        },
+        {
+          "file": "packages/utils/src/query-string/types/index.d.ts",
+          "hash": "13399148765161903758"
+        },
+        {
+          "file": "packages/utils/src/test-utils/index.ts",
+          "hash": "7724251901944194773"
+        },
+        {
+          "file": "packages/utils/src/types/index.d.ts",
+          "hash": "3836994079574944762"
+        },
+        {
+          "file": "packages/utils/src/validation-flow/index.spec.ts",
+          "hash": "592887991443647775"
+        },
+        {
+          "file": "packages/utils/src/validation-flow/index.ts",
+          "hash": "8944505350617582880"
+        },
+        {
+          "file": "packages/utils/src/validation/index.spec.ts",
+          "hash": "17717111117464948950"
+        },
+        {
+          "file": "packages/utils/src/validation/index.ts",
+          "hash": "16461362129533078371"
+        },
+        {
+          "file": "packages/utils/tsconfig.json",
+          "hash": "12404882146747062383"
+        },
+        {
+          "file": "packages/utils/tsconfig.lib.json",
+          "hash": "13013053685363277101"
+        },
+        {
+          "file": "packages/utils/tsconfig.spec.json",
+          "hash": "2462239355872652713"
+        },
+        {
+          "file": "packages/utils/vite.config.ts",
+          "hash": "7748082508820746078",
+          "deps": [
+            "npm:@nx/vite",
+            "npm:vite"
+          ]
+        }
+      ],
+      "@soie/fetcher": [
+        {
+          "file": "packages/fetcher/.eslintrc.json",
+          "hash": "1047236976273008866"
+        },
+        {
+          "file": "packages/fetcher/README.md",
+          "hash": "7220435085752027496"
+        },
+        {
+          "file": "packages/fetcher/package.json",
+          "hash": "4922013084900841276"
+        },
+        {
+          "file": "packages/fetcher/project.json",
+          "hash": "3043355974948281988"
+        },
+        {
+          "file": "packages/fetcher/src/define/fetcher.ts",
+          "hash": "2248117676154715911"
+        },
+        {
+          "file": "packages/fetcher/src/define/gql.ts",
+          "hash": "7424502964751837361"
+        },
+        {
+          "file": "packages/fetcher/src/define/index.ts",
+          "hash": "2210555052084264134"
+        },
+        {
+          "file": "packages/fetcher/src/index.ts",
+          "hash": "6316134315422531792"
+        },
+        {
+          "file": "packages/fetcher/src/test/fetcher.spec.ts",
+          "hash": "4632707701420175170",
+          "deps": [
+            "@soie/utils",
+            "npm:msw"
+          ]
+        },
+        {
+          "file": "packages/fetcher/src/test/gql.spec.ts",
+          "hash": "3070979851723474026",
+          "deps": [
+            "@soie/utils",
+            "npm:msw"
+          ]
+        },
+        {
+          "file": "packages/fetcher/src/types.d.ts",
+          "hash": "13820346898854162428",
+          "deps": [
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-abort-signal-error-message/index.spec.ts",
+          "hash": "16661121212217155772"
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-abort-signal-error-message/index.ts",
+          "hash": "12822418523555136767",
+          "deps": [
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-abort-signal/index.spec.ts",
+          "hash": "1419828856499765562"
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-abort-signal/index.ts",
+          "hash": "18385969124609250546"
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-fetcher-error/index.ts",
+          "hash": "49860814057242076",
+          "deps": [
+            "@soie/utils"
+          ]
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-graphql-error/index.spec.ts",
+          "hash": "16875076948454469270"
+        },
+        {
+          "file": "packages/fetcher/src/utils/create-graphql-error/index.ts",
+          "hash": "5462140050046442795"
+        },
+        {
+          "file": "packages/fetcher/src/utils/get-safe-message/index.test.ts",
+          "hash": "12703728261383751061"
+        },
+        {
+          "file": "packages/fetcher/src/utils/get-safe-message/index.ts",
+          "hash": "17790282523576900884"
+        },
+        {
+          "file": "packages/fetcher/src/utils/index.ts",
+          "hash": "9281940900542689320"
+        },
+        {
+          "file": "packages/fetcher/tsconfig.json",
+          "hash": "12404882146747062383"
+        },
+        {
+          "file": "packages/fetcher/tsconfig.lib.json",
+          "hash": "8679360928715000412"
+        },
+        {
+          "file": "packages/fetcher/tsconfig.spec.json",
+          "hash": "11906568218315815564"
+        },
+        {
+          "file": "packages/fetcher/vite.config.ts",
+          "hash": "10697908115035964079",
+          "deps": [
+            "npm:@nx/vite",
+            "npm:vite"
+          ]
+        }
+      ],
+      "@soie/plugin": [
+        {
+          "file": "packages/plugin/README.md",
+          "hash": "11884980972718749371"
+        },
+        {
+          "file": "packages/plugin/executors.json",
+          "hash": "1954193766300997110"
+        },
+        {
+          "file": "packages/plugin/package.json",
+          "hash": "16502877538246017689",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/plugin/src/executors/index.ts",
+          "hash": "14265679897291669078"
+        },
+        {
+          "file": "packages/plugin/src/executors/tsup/schema.json",
+          "hash": "6468315300269950094"
+        },
+        {
+          "file": "packages/plugin/src/executors/tsup/tsup.impl.ts",
+          "hash": "13562781480550998522",
+          "deps": [
+            "npm:@nx/devkit",
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/plugin/src/index.ts",
+          "hash": "16745256790564120118"
+        },
+        {
+          "file": "packages/plugin/tsconfig.json",
+          "hash": "12524881378710400077"
+        }
+      ],
+      "@soie/source": [
+        {
+          "file": ".editorconfig",
+          "hash": "5443105041930014821"
+        },
+        {
+          "file": ".eslintignore",
+          "hash": "12293789182427731785"
+        },
+        {
+          "file": ".eslintrc.js",
+          "hash": "6332651068040136230"
+        },
+        {
+          "file": ".github/workflows/test.yml",
+          "hash": "18048560883472388648"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "4256910729813586322"
+        },
+        {
+          "file": ".npmrc.sample",
+          "hash": "5685513357557525610"
+        },
+        {
+          "file": ".prettierignore",
+          "hash": "229441411045055199"
+        },
+        {
+          "file": ".prettierrc.js",
+          "hash": "11690718053139627114"
+        },
+        {
+          "file": ".verdaccio/config.yml",
+          "hash": "3445400987408887114"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "4134969992917317260"
+        },
+        {
+          "file": ".vscode/settings.json",
+          "hash": "11527610605242303492"
+        },
+        {
+          "file": "README.md",
+          "hash": "12672844453035689005"
+        },
+        {
+          "file": "gh-md-toc",
+          "hash": "11912817563710051796"
+        },
+        {
+          "file": "license",
+          "hash": "11073763095242297451"
+        },
+        {
+          "file": "migrations.json",
+          "hash": "16590666966409550401"
+        },
+        {
+          "file": "nx.json",
+          "hash": "17504539785129218859"
+        },
+        {
+          "file": "package.json",
+          "hash": "8042620264847556882",
+          "deps": [
+            "npm:@nx/devkit",
+            "npm:@nx/js",
+            "npm:@nx/vite",
+            "npm:@nx/workspace",
+            "npm:@swc-node/register",
+            "npm:@swc/core",
+            "npm:@types/node",
+            "npm:@types/semver",
+            "npm:@typescript-eslint/eslint-plugin",
+            "npm:@typescript-eslint/parser",
+            "npm:@vitest/coverage-v8",
+            "npm:@vitest/ui",
+            "npm:consola",
+            "npm:eslint",
+            "npm:eslint-config-prettier",
+            "npm:eslint-plugin-import",
+            "npm:eslint-plugin-prettier",
+            "npm:eslint-plugin-simple-import-sort",
+            "npm:msw",
+            "npm:nx",
+            "npm:prettier",
+            "npm:semver",
+            "npm:typescript",
+            "npm:verdaccio",
+            "npm:vite",
+            "npm:vitest"
+          ]
+        },
+        {
+          "file": "pnpm-lock.yaml",
+          "hash": "2700955169038217129"
+        },
+        {
+          "file": "pnpm-workspace.yaml",
+          "hash": "414265049992887245"
+        },
+        {
+          "file": "project.json",
+          "hash": "15792868480088124603"
+        },
+        {
+          "file": "tools/scripts/publish.mjs",
+          "hash": "9689461084649035346",
+          "deps": [
+            "npm:@nx/devkit",
+            "npm:consola",
+            "npm:semver"
+          ]
+        },
+        {
+          "file": "tsconfig.base.json",
+          "hash": "13147839795266094312"
+        }
+      ]
+    },
+    "nonProjectFiles": []
+  }
+}

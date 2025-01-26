@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "test": "nx run-many -t test"
+    "test": "nx run-many -t test",
+    "prepare": "husky"
   },
   "private": false,
   "devDependencies": {
@@ -28,12 +29,14 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
     "msw": "^2.2.0",
     "nx": "20.3.3",
     "prettier": "^3.2.4",
     "semver": "^7.6.0",
     "typescript": "5.6.3",
-    "verdaccio": "^5.29.0",
+    "verdaccio": "^6.0.5",
     "vite": "^5.0.12",
     "vitest": "1.6.0"
   },
@@ -45,5 +48,10 @@
   ],
   "nx": {
     "includedScripts": []
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json,md,css,scss,html,yml,yaml}": [
+      "eslint --fix"
+    ]
   }
 }
