@@ -19,7 +19,6 @@
       "@/data-manager/*": ["packages/data-manager/src/*"],
       "@/fetcher/*": ["packages/fetcher/src/*"],
       "@soie/data-manager": ["packages/data-manager/src/index.ts"],
-      "@soie/fetcher": ["packages/fetcher/src/index.ts"],
       "@soie/plugin": ["packages/plugin/src/index.ts"],
       "@soie/utils/*": ["packages/utils/src/*"]
     }

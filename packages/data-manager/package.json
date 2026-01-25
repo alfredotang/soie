@@ -36,5 +36,8 @@
       "import": "./index.mjs",
       "types": "./index.d.ts"
     }
+  },
+  "dependencies": {
+    "@soie/fetcher": "^1.1.1"
   }
 }
